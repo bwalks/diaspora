@@ -6,7 +6,7 @@ namespace :migrations do
 
   desc 'copy all hidden share visibilities from share_visibilities to users. Can be run with the site still up.'
   task :copy_hidden_share_visibilities_to_users => [:environment] do
-    require File.join(Rails.root, 'lib', 'share_visibility_converter')
+    require Rails.root.join('lib', 'share_visibility_converter')
     ShareVisibilityConverter.copy_hidden_share_visibilities_to_users
   end
 
@@ -49,10 +49,10 @@ namespace :migrations do
 
   task :upload_photos_to_s3 do
     require File.join(File.dirname(__FILE__), '..', '..', 'config', 'environment')
-    puts AppConfig[:s3_key]
+    puts AppConfig.environment.s3.key
 
-    connection = Aws::S3.new( AppConfig[:s3_key], AppConfig[:s3_secret])
-    bucket = connection.bucket('joindiaspora')
+    connection = Aws::S3.new( AppConfig.environment.s3.key, AppConfig.environment.s3.secret)
+    bucket = connection.bucket(AppConfig.environment.s3.bucket)
     dir_name = File.dirname(__FILE__) + "/../../public/uploads/images/"
 
     count = Dir.foreach(dir_name).count
@@ -73,5 +73,58 @@ namespace :migrations do
       end
     }
 
+  end
+
+  # removes hashtags with uppercase letters and re-attaches
+  # the posts to the lowercase version
+  task :rewire_uppercase_hashtags => :environment do
+    evil_tags = ActsAsTaggableOn::Tag.where("lower(name) != name")
+    puts "found #{evil_tags.count} tags to convert..."
+
+    evil_tags.each_with_index do |tag, i|
+      good_tag = ActsAsTaggableOn::Tag.find_or_create_by_name(tag.name.mb_chars.downcase)
+      puts "++ '#{tag.name}' has #{tag.taggings.count} records attached"
+
+      taggings = tag.taggings
+      deleteme = []
+
+      taggings.each do |tagging|
+        if good_tag.taggings.where(:taggable_id => tagging.taggable_id).count > 0
+          # the same taggable is already tagged with the correct tag
+          # just delete the obsolete tagging it
+          deleteme << tagging
+          next
+        end
+
+        # the tagging exists only for the wrong tag, move it to the 'good tag'
+        good_tag.taggings << tagging
+      end
+
+      deleteme.each do |tagging|
+        tagging.destroy
+      end
+
+      rest = tag.taggings(true) # force reload
+      if rest.count > 0
+        puts "-- the tag #{tag.name} still has some taggings - aborting!"
+        break
+      end
+
+      # no more taggings left, delete the tag
+      tag.destroy
+
+      puts "-- converted '#{tag.name}' to '#{good_tag.name}'"
+      puts "\n## #{i+1} tags processed\n\n" if ((i+1) % 50 == 0)
+    end
+  end
+
+  task :remove_uppercase_hashtags => :environment do
+    evil_tags = ActsAsTaggableOn::Tag.where("lower(name) != name")
+    evil_tags.each do |tag|
+      next if tag.taggings.count > 0 # non-ascii tags
+
+      puts "removing '#{tag.name}'..."
+      tag.destroy
+    end
   end
 end

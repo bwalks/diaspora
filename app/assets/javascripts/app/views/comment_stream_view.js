@@ -5,6 +5,7 @@ app.views.CommentStream = app.views.Base.extend({
   className : "comment_stream",
 
   events: {
+    "keydown .comment_box": "keyDownOnCommentBox",
     "submit form": "createComment",
     "focus .comment_box": "commentTextareaFocused",
     "click .toggle_post_comments": "expandComments"
@@ -31,18 +32,33 @@ app.views.CommentStream = app.views.Base.extend({
 
   presenter: function(){
     return _.extend(this.defaultPresenter(), {
-      moreCommentsCount : (this.model.get("comments_count") - 3),
-      showExpandCommentsLink : (this.model.get("comments_count") > 3)
+      moreCommentsCount : (this.model.interactions.commentsCount() - 3),
+      showExpandCommentsLink : (this.model.interactions.commentsCount() > 3),
+      commentsCount : this.model.interactions.commentsCount()
     })
   },
 
   createComment: function(evt) {
     if(evt){ evt.preventDefault(); }
-    this.model.comment(this.$(".comment_box").val())
-    this.$(".comment_box").val("")
-    return this;
+    
+    var commentText = $.trim(this.$('.comment_box').val());
+    this.$(".comment_box").val("");
+    this.$(".comment_box").css("height", "");
+    if(commentText) {
+      this.model.comment(commentText);
+      return this;
+    } else {
+      this.$(".comment_box").focus();
+    }
   },
 
+  keyDownOnCommentBox: function(evt) {
+    if(evt.keyCode == 13 && evt.ctrlKey) {
+      this.$("form").submit()
+      return false;
+    }
+  },
+  
   appendComment: function(comment) {
     // Set the post as the comment's parent, so we can check
     // on post ownership in the Comment view.
@@ -60,16 +76,17 @@ app.views.CommentStream = app.views.Base.extend({
   expandComments: function(evt){
     if(evt){ evt.preventDefault(); }
 
-    var self = this;
+    self = this;
+
     this.model.comments.fetch({
       success : function(resp){
         self.model.set({
           comments : resp.models,
           all_comments_loaded : true
         })
+
         self.model.trigger("commentsExpanded", self)
       }
     });
   }
-
 });

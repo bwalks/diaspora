@@ -10,14 +10,14 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => citie
 
-require File.join(File.dirname(__FILE__), "..", "config", "environment")
+require Rails.root.join('config', 'environment')
 require 'factory_girl_rails'
-require File.join(File.dirname(__FILE__), "..", "spec", "helper_methods")
+require Rails.root.join('spec', 'helper_methods')
 include HelperMethods
 
-alice = Factory(:user_with_aspect, :username => "alice", :password => 'evankorth')
-bob   = Factory(:user_with_aspect, :username => "bob", :password => 'evankorth')
-eve   = Factory(:user_with_aspect, :username => "eve", :password => 'evankorth')
+alice = FactoryGirl.create(:user_with_aspect, :username => "alice", :password => 'evankorth')
+bob   = FactoryGirl.create(:user_with_aspect, :username => "bob", :password => 'evankorth')
+eve   = FactoryGirl.create(:user_with_aspect, :username => "eve", :password => 'evankorth')
 
 def url_hash(name)
   image_url = "/assets/user/#{name}.jpg"
@@ -41,35 +41,23 @@ connect_users(bob, bob.aspects.first, alice, alice.aspects.first)
 connect_users(bob, bob.aspects.first, eve, eve.aspects.first)
 puts "done!"
 
-print "Adding Facebook contacts... "
-bob_facebook = Factory(:service, :type => 'Services::Facebook', :user_id => bob.id, :uid => bob.username)
-ServiceUser.import((1..40).map{|n| Factory.build(:service_user, :service => bob_facebook)} +
-                   [Factory.build(:service_user, :service => bob_facebook, :uid => eve.username, :person => eve.person,
-                                 :contact => bob.contact_for(eve.person))])
-
-eve_facebook = Factory(:service, :type => 'Services::Facebook', :user_id => eve.id, :uid => eve.username)
-ServiceUser.import((1..40).map{|n| Factory.build(:service_user, :service => eve_facebook) } +
-                   [Factory.build(:service_user, :service => eve_facebook, :uid => bob.username, :person => bob.person,
-                                  :contact => eve.contact_for(bob.person))])
-
-
+print "making Bob an admin... "
+Role.add_admin(bob.person)
 puts "done!"
 
-require File.join(File.dirname(__FILE__), '..', 'spec', 'support', 'fake_resque')
-require File.join(File.dirname(__FILE__), '..', 'spec', 'support', 'user_methods')
+
+require 'sidekiq/testing/inline'
+require Rails.root.join('spec', 'support', 'user_methods')
 
 print "Seeding post data..."
 time_interval = 1000
-(1..25).each do |n|
+(1..23).each do |n|
   [alice, bob, eve].each do |u|
     print '.'
-    if(n%3==1)
+    if(n%2==0)
       post = u.post :status_message, :text => "#{u.username} - #{n} - #seeded", :to => u.aspects.first.id
-    elsif(n%3==2)
-      post =u.post(:reshare, :root_guid => Factory(:status_message, :public => true).guid, :to => 'all')
     else
-      post = Factory(:activity_streams_photo, :public => true, :author => u.person)
-      u.add_to_streams(post, u.aspects)
+      post = u.post(:reshare, :root_guid => FactoryGirl.create(:status_message, :public => true).guid, :to => 'all')
     end
 
     post.created_at = post.created_at - time_interval

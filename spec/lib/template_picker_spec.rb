@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), '..', '..', 'lib', 'template_picker')
 require 'spec_helper'
+
 describe TemplatePicker do
   before do
     @post_stubs = {:type => 'StatusMessage', :photos => stub(:size => 2), 
@@ -24,9 +24,9 @@ describe TemplatePicker do
   end
 
   describe '#status_with_photo_backdrop?' do
-    it 'is true if the post contains a single photo and text' do
+    it 'is false even if the post contains a single photo and text' do
       @post_stubs.merge!(:photos => stub(:size => 1))
-      TemplatePicker.new(post).should be_status_with_photo_backdrop
+      TemplatePicker.new(post).should_not be_status_with_photo_backdrop
     end
   end
 
@@ -36,22 +36,10 @@ describe TemplatePicker do
     end
   end
 
-  describe '#rich_media?' do
-    it 'is true if the post contains an o_embed object' do
-      TemplatePicker.new(post).should be_rich_media
-    end
-  end
-
-  describe 'multi_photo?' do
-    it 'is true if the post contains more than one photo' do
-      TemplatePicker.new(post).should be_multi_photo
-    end
-  end
-
   describe '#photo_backdrop?' do
-    it 'is true if the post contains only one photo' do
+    it 'is false even if the post contains only one photo' do
       @post_stubs.merge!(:photos => stub(:size => 1))
-      TemplatePicker.new(post).should be_photo_backdrop
+      TemplatePicker.new(post).should_not be_photo_backdrop
     end
 
   end
@@ -62,18 +50,12 @@ describe TemplatePicker do
     end
   end
 
-  describe '#activity_stream_photo' do
-    it 'is true if the post is of type activity_streams_photo' do
-      photo = stub(:type => "ActivityStreams::Photo")      
-      TemplatePicker.new(photo).should be_activity_streams_photo
-    end
-  end
-
   describe 'factories' do
-    TemplatePicker::TEMPLATES.each do |template|
+    # No photo_backdrop for now.
+    (TemplatePicker::TEMPLATES - ['status_with_photo_backdrop', 'photo_backdrop']).each do |template|
       describe "#{template} factory" do
         it 'works' do
-          post = Factory.build(template.to_sym, :author => alice.person)
+          post = FactoryGirl.build(template.to_sym, :author => alice.person)
           template_name = TemplatePicker.new(post).template_name.gsub('-', '_')
           template_name.should == template
         end

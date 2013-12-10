@@ -4,9 +4,6 @@
 
 require 'spec_helper'
 
-require File.join(Rails.root, 'lib/postzord')
-require File.join(Rails.root, 'lib/postzord/receiver/private')
-
 describe Postzord::Receiver::Private do
 
   before do
@@ -53,7 +50,7 @@ describe Postzord::Receiver::Private do
       end
 
       it 'if the author does not match the signature' do
-        @zord.instance_variable_set(:@sender, Factory(:person))
+        @zord.instance_variable_set(:@sender, FactoryGirl.create(:person))
         @zord.receive!.should == false
       end
     end

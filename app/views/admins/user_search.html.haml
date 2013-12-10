@@ -1,34 +1,34 @@
 
 .span-24
-  = render :partial => 'admins/admin_bar.haml'
+  = render :partial => 'admins/admin_bar'
 .span-24.prepend-4
 
   %h3
-    you currently have
-    = current_user.invitation_code.count
-    invites left
-    = link_to "add_invites", add_invites_path(current_user.invitation_code)
-
+    != t('.you_currently', :user_invitation => current_user.invitation_code.count, :link => link_to(t(".add_invites"), add_invites_path(current_user.invitation_code)))
+    
     = form_tag 'admin_inviter', :method => :get do
-      email to invite:
+      = t('.email_to')
       = text_field_tag 'identifier'
-      = submit_tag 'invite'
+      = submit_tag t('services.remote_friend.invite')
 
 
 
   %h3
-    user search
+    = t('admins.admin_bar.user_search')
   = form_tag 'user_search', :method => :get do
-    username:
+    = t('username')
     = text_field_tag 'user[username]', params[:user][:username]
 
-    email:
+    = t('email')
     = text_field_tag 'user[email]', params[:user][:email]
 
-    = submit_tag 'go'
+    = t('.under_13')
+    = check_box_tag 'under13', params[:under13]
+
+    = submit_tag t('admins.stats.go')
 
 
-  = "#{@users.count} users found"
+  = t('.users', :count => @users.count)
   %br
   %br
   - @users.each do |user|
@@ -41,7 +41,7 @@
         = user.person.profile.inspect
       %br
     = "invite token: #{invite_code_url(user.invited_by.invite_code)}" if user.invited_by.present?
-    = link_to "add_invites", add_invites_path(user.invitation_code)
+    = link_to t(".add_invites"), add_invites_path(user.invitation_code)
     %br
     %br
     %br

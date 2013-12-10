@@ -3,21 +3,22 @@
 #   the COPYRIGHT file.
 
 require 'spec_helper'
-require File.join(Rails.root, 'lib/rake_helpers.rb')
+require 'rake_helpers'
+
 include RakeHelpers
 describe RakeHelpers do
   before do
-    @csv = File.join(Rails.root, 'spec/fixtures/test.csv')
+    @csv = Rails.root.join('spec', 'fixtures', 'test.csv')
   end
   describe '#process_emails' do
     before do
       Devise.mailer.deliveries = []
-      @old_admin = AppConfig[:admin_account]
-      AppConfig[:admin_account] = Factory(:user).username
+      @old_admin = AppConfig.admins.account.get
+      AppConfig.admins.account = FactoryGirl.create(:user).username
     end
 
     after do
-      AppConfig[:admin_account] = @old_admin
+      AppConfig.admins.account = @old_admin
     end
 
     it 'should send emails to each email' do

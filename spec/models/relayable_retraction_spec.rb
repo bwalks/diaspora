@@ -3,25 +3,41 @@
 #   the COPYRIGHT file.
 
 require 'spec_helper'
-require File.join(Rails.root, "spec", "shared_behaviors", "relayable")
+require Rails.root.join("spec", "shared_behaviors", "relayable")
 
 describe RelayableRetraction do
   before do
     @local_luke, @local_leia, @remote_raphael = set_up_friends
-    @remote_parent = Factory(:status_message, :author => @remote_raphael)
+    @remote_parent = FactoryGirl.build(:status_message, :author => @remote_raphael)
     @local_parent = @local_luke.post :status_message, :text => "hi", :to => @local_luke.aspects.first
   end
 
-  describe '#subscribers' do
+  context "when retracting a comment" do
     before do
       @comment= @local_luke.comment!(@local_parent, "yo")
       @retraction= @local_luke.retract(@comment)
     end
 
-    it 'delegates it to target' do
-      arg = mock()
-      @retraction.target.should_receive(:subscribers).with(arg)
-      @retraction.subscribers(arg)
+    describe "#parent" do
+      it "delegates to to target" do
+        @retraction.target.should_receive(:parent)
+        @retraction.parent
+      end
+    end
+
+    describe "#parent_author" do
+      it "delegates to target" do
+        @retraction.target.should_receive(:parent_author)
+        @retraction.parent_author
+      end
+    end
+
+    describe '#subscribers' do
+      it 'delegates it to target' do
+        arg = mock()
+        @retraction.target.should_receive(:subscribers).with(arg)
+        @retraction.subscribers(arg)
+      end
     end
   end
 

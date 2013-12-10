@@ -1,29 +1,17 @@
-//= require ./stream_object_view
-app.views.Content = app.views.StreamObject.extend({
-
+app.views.Content = app.views.Base.extend({
   events: {
-    "click .oembed .thumb": "showOembedContent",
     "click .expander": "expandPost"
   },
 
   presenter : function(){
     return _.extend(this.defaultPresenter(), {
       text : app.helpers.textFormatter(this.model.get("text"), this.model),
-      o_embed_html : this.embedHTML(),
       largePhoto : this.largePhoto(),
-      smallPhotos : this.smallPhotos()
+      smallPhotos : this.smallPhotos(),
+      location: this.location()
     });
   },
 
-  embedHTML: function(){
-    if(!this.model.get("o_embed_cache")) { return ""; }
-    var data = this.model.get("o_embed_cache").data;
-    if(data.type == "photo") {
-      return '<img src="'+data.url+'" width="'+data.width+'" height="'+data.height+'" />';
-    } else {
-      return data.html || ""
-    }
-  },
 
   largePhoto : function() {
     var photos = this.model.get("photos")
@@ -37,13 +25,6 @@ app.views.Content = app.views.StreamObject.extend({
     return photos.slice(1,8)
   },
 
-  showOembedContent: function() {
-    var oembed = $(this.el).find(".oembed");
-    var insertHTML = $( this.embedHTML() );
-    var paramSeparator = ( /\?/.test(insertHTML.attr("src")) ) ? "&" : "?";
-    insertHTML.attr("src", insertHTML.attr("src") + paramSeparator + "autoplay=1");
-    oembed.html( insertHTML );
-  },
 
   expandPost: function(evt) {
     var el = $(this.el).find('.collapsible');
@@ -54,14 +35,22 @@ app.views.Content = app.views.StreamObject.extend({
     $(evt.currentTarget).hide();
   },
 
+  location: function(){
+    var address = this.model.get('address')? this.model.get('address') : '';
+    return address;
+  },
+
   collapseOversized : function() {
     var collHeight = 200
       , elem = this.$(".collapsible")
       , oembed = elem.find(".oembed")
+      , opengraph = elem.find(".opengraph")
       , addHeight = 0;
-
     if($.trim(oembed.html()) != "") {
-      addHeight = oembed.height();
+      addHeight += oembed.height();
+    }
+    if($.trim(opengraph.html()) != "") {
+      addHeight += opengraph.height();
     }
 
     // only collapse if height exceeds collHeight+20%
@@ -87,11 +76,42 @@ app.views.StatusMessage = app.views.Content.extend({
   templateName : "status-message"
 });
 
+app.views.ExpandedStatusMessage = app.views.StatusMessage.extend({
+  postRenderTemplate : function(){
+  }
+});
+
 app.views.Reshare = app.views.Content.extend({
   templateName : "reshare"
 });
 
-app.views.ActivityStreams__Photo = app.views.Content.extend({
-  templateName : "activity-streams-photo"
+app.views.OEmbed = app.views.Base.extend({
+  templateName : "oembed",
+  events : {
+    "click .thumb": "showOembedContent"
+  },
+
+  presenter:function () {
+    o_embed_cache = this.model.get("o_embed_cache")
+    if(o_embed_cache) {
+      typemodel = { rich: false, photo: false, video: false, link: false }
+      typemodel[o_embed_cache.data.type] = true
+      o_embed_cache.data.types = typemodel
+    }
+    return _.extend(this.defaultPresenter(), {
+      o_embed_html : app.helpers.oEmbed.html(o_embed_cache)
+    })
+  },
+
+  showOembedContent : function (evt) {
+    if( $(evt.target).is('a') ) return;
+    var insertHTML = $(app.helpers.oEmbed.html(this.model.get("o_embed_cache")));
+    var paramSeparator = ( /\?/.test(insertHTML.attr("src")) ) ? "&" : "?";
+    insertHTML.attr("src", insertHTML.attr("src") + paramSeparator + "autoplay=1&wmode=opaque");
+    this.$el.html(insertHTML);
+  }
 });
 
+app.views.OpenGraph = app.views.Base.extend({
+  templateName : "opengraph"
+});

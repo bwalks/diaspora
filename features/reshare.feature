@@ -5,9 +5,35 @@ Feature: public repost
   I want to reshare my friend's post
 
   Background:
-    Given a user named "Bob Jones" with email "bob@bob.bob"
-    And a user named "Alice Smith" with email "alice@alice.alice"
+    Given following users exist:
+      | username    | email             |
+      | Bob Jones   | bob@bob.bob       |
+      | Alice Smith | alice@alice.alice |
+      | Eve Doe     | eve@eve.eve       |
     And a user with email "bob@bob.bob" is connected with "alice@alice.alice"
+
+  Scenario: Resharing a post from a single post page
+    Given "bob@bob.bob" has a public post with text "reshare this!"
+    And I sign in as "alice@alice.alice"
+    And I am on "bob@bob.bob"'s page
+    And I follow "Last Post"
+
+    And I click on selector "a.reshare"
+    And I confirm the alert
+    Then I should see a flash message indicating success
+    And I should see a flash message containing "successfully"
+
+  Scenario: Resharing a post from a single post page that is reshared
+    Given "bob@bob.bob" has a public post with text "reshare this!"
+    And the post with text "reshare this!" is reshared by "eve@eve.eve"
+    And I sign in as "alice@alice.alice"
+    And I am on "bob@bob.bob"'s page
+    And I follow "Last Post"
+
+    And I click on selector "a.reshare"
+    And I confirm the alert
+    Then I should see a flash message indicating success
+    And I should see a flash message containing "successfully"
 
   # should be covered in rspec, so testing that the post is added to
   # app.stream in jasmine should be enough coverage
@@ -15,12 +41,8 @@ Feature: public repost
     Given "bob@bob.bob" has a public post with text "reshare this!"
     And I sign in as "alice@alice.alice"
 
-    And I preemptively confirm the alert
     And I follow "Reshare"
-    And I wait for the ajax to finish
-    And I wait for 2 seconds
-
-    When I am on "alice@alice.alice"'s page
-    Then I should see "reshare this!"
-    Then I should see a ".reshare"
-    And I should see "Bob"
+    And I confirm the alert
+    Then I should see a flash message indicating success
+    And I should see a flash message containing "successfully"
+    And I should not see a ".reshare" within ".feedback"

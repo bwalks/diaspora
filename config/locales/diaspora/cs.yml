@@ -1,4 +1,4 @@
-#   Copyright (c) 2010-2012, Diaspora Inc.  This file is
+#   Copyright (c) 2010-2013, Diaspora Inc.  This file is
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
@@ -30,7 +30,7 @@ cs:
         reshare:
           attributes:
             root_guid:
-              taken: "Toto zprávu už sdílíte."
+              taken: "Ten je dobrý, že?  Tento příspěvek už sdílíte!"
         user:
           attributes:
             email:
@@ -40,6 +40,44 @@ cs:
             username:
               invalid: "je neplatné. Povolené znaky jsou pouze písmena, číslice a podtržítko."
               taken: "je již obsazeno."
+  admins:
+    admin_bar:
+      pages: "Stránky"
+      user_search: "Hledat uživatele"
+      weekly_user_stats: "Týdenní uživatelské statistiky"
+    stats:
+      50_most: "50 nejoblíbenějších štítků"
+      comments:
+        few: "%{count} komentáře"
+        one: "jeden komentář"
+        other: "%{count} komentářů"
+        zero: "žádný komentář"
+      daily: "Denně"
+      month: "Měsíc"
+      posts:
+        few: "%{count} příspěvky"
+        one: "jeden příspěvek"
+        other: "%{count} příspěvků"
+        zero: "žádný příspěvek"
+      shares:
+        few: "%{count} sdílení"
+        one: "jedno sdílení"
+        other: "%{count} sdílení"
+        zero: "žádné sdílení"
+      tag_name: "Štítek: <b>%{name_tag}</b> Počet: <b>%{count_tag}</b>"
+      users:
+        few: "%{count} uživatelé"
+        one: "jeden uživatel"
+        other: "%{count} uživatelů"
+        zero: "žádný uživatel"
+      week: "Týden"
+    user_search:
+      email_to: "E-mailová adresa, kterou chcete pozvat"
+      users:
+        few: "Nalezeni %{count} uživatelé"
+        one: "Nalezen jeden uživatel"
+        other: "Nalezeno %{count} uživatelů"
+        zero: "Žádný uživatel nenalezen"
   ago: "před %{time}"
   all_aspects: "Všechny aspekty"
   application:
@@ -66,6 +104,10 @@ cs:
       deselect_all: "Zrušit výběr"
       edit_aspect: "Upravit %{name}"
       select_all: "Vybrat vše"
+    aspect_stream:
+      make_something: "Udělejte něco"
+      stay_updated: "Zůstaňte v kontaktu"
+      stay_updated_explanation: "Proud je tvořen příspěvky vašich kontaktů, příspěvků se štítky, které sledujete, a příspěvků některých aktivních členů komunity."
     contacts_not_visible: "Kontakty v tomto aspektu se vzájemně neuvidí."
     contacts_visible: "Kontakty v tomto aspektu se budou moci vzájemně vidět."
     create:
@@ -92,16 +134,19 @@ cs:
       remove: "odebrat"
     index:
       cubbies:
-        explanation: "Cubbi.es je první Diaspora aplikace ve vývoji."
+        explanation: "Cubbi.es je první aplikace pro Diasporu ve vývoji."
         heading: "Připojit se na Cubbi.es"
         learn_more: "Dozvědět se více"
       diaspora_id:
         content_1: "Vaše Diaspora ID je:"
         content_2: "Dejte to někomu a bude vás moci najít na Diaspoře."
+        heading: "Diaspora ID"
       donate: "Přispějte"
       handle_explanation: "Toto je vaše Diaspora ID. Podobně jako e-mailovou adresu ho můžete dál lidem a budete na něm dostupní."
       help:
+        any_problem: "Nějaký problém?"
         email_feedback: "Můžete také %{link} vaši zpětnou vazbu, pokud tomu dáváte přednost."
+        email_link: "E-mail"
         feature_suggestion: "… vymyslel jste novou %{link}?"
         find_a_bug: "… našli jste %{link}?"
         have_a_question: "… máte nějakou %{link}?"
@@ -111,6 +156,7 @@ cs:
         tag_feature: "vlastnost"
         tag_question: "otázku"
       introduce_yourself: "Tohle je váš proud.   Naskočte a představte se."
+      keep_diaspora_running: "Udržujte vývoj Diaspory rychlý měsíčními příspěvky!"
       new_here:
         learn_more: "Zjistit více"
         title: "Přivítejte nové uživatele"
@@ -132,6 +178,7 @@ cs:
       create: "Vytvořit"
       name: "Název"
     no_contacts_message:
+      or_spotlight: "Můžete jej sdílet i pomocí %{link}"
       try_adding_some_more_contacts: "Nové kontakty můžete vyhledávat (nahoře) nebo někoho pozvat (vpravo)."
       you_should_add_some_more_contacts: "Přidejte si více kontaktů!"
     no_posts_message:
@@ -158,6 +205,9 @@ cs:
     index:
       no_applications: "Nemáte registrovanou žádnou aplikaci."
       revoke_access: "Zrušit přístup"
+    new:
+      cubbies_will: "Cubbies budou moci odesílat fotografie vaším jménem"
+      nope: "Ne"
   back: "Zpět"
   blocks:
     create:
@@ -168,8 +218,7 @@ cs:
       success: "Tak ať tedy řekne, co má na srdci!  #pozdrav"
   bookmarklet:
     explanation: "Pište na Diasporu odkudkoliv pomocí %{link}."
-    explanation_link_text: "tohoto odkazu"
-    post_something: "Poslat něco na Diasporu"
+    post_something: "Sdílet na Diaspoře"
     post_success: "Odesláno! Zavírám!"
   cancel: "Zrušit"
   comments:
@@ -189,6 +238,7 @@ cs:
     index:
       add_a_new_aspect: "Přidat nový aspekt"
       add_to_aspect: "Přidat kontakty do %{name}"
+      add_to_aspect_link: "přidat kontakty do %{name}"
       all_contacts: "Všechny kontakty"
       many_people_are_you_sure: "Jste si jisti, že chcete začít soukromý rozhovor s více než %{suggested_limit} kontakty? Posílání zpráv do tohoto aspektu může být lepší způsob, jak s nimi spojit."
       my_contacts: "Moje kontakty"
@@ -203,10 +253,13 @@ cs:
     other: "%{count} kontaktů"
     sharing:
       people_sharing: "Lidé, kteří s vámi sdílí:"
+    spotlight:
+      suggest_member: "Navrhněte člena"
     two: "%{count} kontakty"
     zero: "žádné kontakty"
   conversations:
     create:
+      fail: "Neplatná zpráva"
       sent: "Zpráva byla odeslána"
     destroy:
       success: "Konverzace úspěšně odstraněna"
@@ -231,33 +284,27 @@ cs:
       sending: "Posílám..."
       subject: "předmět"
       to: "pro"
+    new_message:
+      fail: "Neplatná zpráva"
     show:
       delete: "smazat a blokovat konverzaci"
       reply: "odpověď"
       replying: "Odpovídám…"
+  date:
+    formats:
+      birthday: "%-d. %EB"
+      birthday_with_year: "%-d. %EB %Y"
+      fullmonth_day: "%-d. %EB"
   delete: "Smazat"
   email: "E-mail"
   error_messages:
     helper:
       correct_the_following_errors_and_try_again: "Opravte následující chyby a zkuste to znovu."
       invalid_fields: "Neplatná pole"
+    post_not_public: "Příspěvek který se snažíte zobrazit není veřejný!"
   fill_me_out: "Vyplňte"
   find_people: "Najít lidi nebo #štítky"
   hide: "Skrýt"
-  home:
-    show:
-      already_account: "máte již účet?"
-      choice: "Volba"
-      choice_explanation: "Diaspora Vám umožňuje přiřadit si všechny Vaše kontakty do skupin, které se nazývají aspekty. Ty jsou unikátní právě tím, že dokáží zabezpečit, aby k vašim fotkám, zprávám a stavům měli přístup jen ti, u kterých to máte v úmyslu."
-      learn_about_host: "Dozvědět se o více o tom, jak zprovoznit svůj vlastní Diaspora server."
-      login_here: "přihlásit se zde"
-      ownership: "Vlastnictví"
-      ownership_explanation: "Vaše obrázky jsou Vaším vlastnictvím. Neměli byste se ho zříkat jen kvůli tomu, že je chcete sdílet. Zachovejte si vlastnická práva ke všemu, co zveřejňujete na Diaspoře. Jen tak Vám zůstane plná kontrola nad tím, jak se s nimi nakládá."
-      share_what_you_want: "Sdílejte, co chcete, s kým chcete."
-      simplicity: "Jednoduchost"
-      simplicity_explanation: "Sdílení je v Diaspoře velmi lehké a transparentní — a to je i záruka Vašeho soukromí. Diaspora neobsahuje žádné složité stránky s nastavením, nastavení soukromí nevyjímaje, kterými byste se museli prokouskávat, abyste uchovali svůj profil v bezpečí podle svých představ."
-      tagline_first_half: "Sdílejte, co chcete,"
-      tagline_second_half: "s kým chcete."
   invitations:
     a_facebook_user: "Uživatel Facebooku"
     check_token:
@@ -265,10 +312,11 @@ cs:
     create:
       already_contacts: "Jste již propojeni s touto osobou"
       already_sent: "Již jste pozvali tuto osobu."
+      empty: "Prosíme zadejte alespoň jednu emailovou adresu."
       no_more: "Nemáte žádné další pozvánky."
       own_address: "Nemůžete poslat pozvánku na svou vlastní adresu."
       rejected: "Následující e-mailové adresy mají problémy: "
-      sent: "Pozvánky byly poslány pro:"
+      sent: "Pozvánky byly poslány pro: %{emails}"
     edit:
       accept_your_invitation: "Přijměte pozvání"
       your_account_awaits: "Váš účet čeká!"
@@ -276,10 +324,11 @@ cs:
       already_invited: "Následující lidé nepřijali vaše pozvání:"
       aspect: "Aspekt"
       check_out_diaspora: "Vyzkoušejte Diasporu!"
-      comma_seperated_plz: "Můžete zadat více e-mailových adres oddělených čárkami."
+      comma_separated_plz: "Můžete zadat více e-mailových adres oddělených čárkami."
       if_they_accept_info: "pokud pozvání přijme, bude přidán(a) do aspektu, do kterého byl(a) pozván(a)."
       invite_someone_to_join: "Pozvěte někoho na Diasporu!"
       language: "Jazyk"
+      paste_link: "Sdílejte tento odkaz s vašimi přáteli abyste je pozvali do Diaspory*, nebo jim ho přímo pošlete emailem."
       personal_message: "Osobní zpráva"
       resend: "Znovu odeslat"
       send_an_invitation: "Odeslat pozvánku"
@@ -306,21 +355,19 @@ cs:
   likes:
     likes:
       people_dislike_this:
-        few: "%{count} lidem se to nelíbí"
-        many: "%{count} lidem se to nelíbí"
-        one: "1 osobě se to nelíbí"
-        other: "%{count} lidem se to nelíbí"
-        two: "%{count} dislikes"
+        few: "%{count} uživatelům se to nelíbí"
+        one: "jednomu uživateli se to nelíbí"
+        other: "%{count} uživatelům se to nelíbí"
         zero: "žádná záporná hodnocení"
       people_like_this:
-        few: "%{count} lidem se to líbí"
-        one: "1 osobě se to líbí"
-        other: "%{count} lidem se to líbí"
+        few: "%{count} uživatelům se to líbí"
+        one: "jednomu uživateli se to líbí"
+        other: "%{count} uživatelům se to líbí"
         zero: "žádná kladná hodnocení"
       people_like_this_comment:
-        few: "%{count} lidem se to líbí"
-        one: "%{count} osobě se to líbí"
-        other: "%{count} lidem se to líbí"
+        few: "%{count} uživatelům se to líbí"
+        one: "jednomu uživateli se to líbí"
+        other: "%{count} uživatelům se to líbí"
         zero: "žádná kladná hodnocení"
   limited: "Omezený"
   more: "Více"
@@ -344,37 +391,30 @@ cs:
       zero: "%{actors} komentovali váš %{post_link}."
     helper:
       new_notifications:
-        few: "%{count} nová oznámení"
-        many: "%{count} nových oznámení"
-        one: "1 nové oznámení"
-        other: "%{count} nových oznámení"
-        two: "%{count} nová oznámení"
-        zero: "Žádná nová oznámení"
+        few: "%{count} nová upozornění"
+        one: "Jedno nové upozornění"
+        other: "%{count} nových upozornění"
+        zero: "Žádná nová upozornění"
     index:
       and: "a"
       and_others:
         few: "a %{count} další"
-        many: "a %{count} dalších"
         one: "a ještě jeden"
         other: "a %{count} dalších"
-        two: "a %{count} další"
-        zero: "a už nikdo"
+        zero: "a nikdo další"
       mark_all_as_read: "Označit vše jako přečtené"
+      mark_unread: "Označit jako nepřečtené"
       notifications: "Oznámení"
     liked:
-      few: "%{actors} se zalíbil váš %{post_link}."
-      many: "%{actors} se zalíbil váš %{post_link}."
-      one: "%{actors} se zalíbil váš %{post_link}."
-      other: "%{actors} se zalíbil váš %{post_link}."
-      two: "%{actors} se zalíbil váš %{post_link}."
-      zero: "%{actors} se zalíbil váš %{post_link}."
+      few: "%{actors} se líbí váš %{post_link}."
+      one: "%{actors} se líbí váš %{post_link}."
+      other: "%{actors} se líbí váš %{post_link}."
+      zero: "%{actors} se líbí váš %{post_link}."
     liked_post_deleted:
-      few: "%{actors} se líbil váš odstraněný příspěvek."
-      many: "%{actors} se líbil váš odstraněný příspěvek."
-      one: "%{actors} se líbil váš odstraněný příspěvek."
-      other: "%{actors} se líbil váš odstraněný příspěvek."
-      two: "%{actors} se líbil váš odstraněný příspěvek."
-      zero: "%{actors} se líbil váš odstraněný příspěvek."
+      few: "%{actors} se líbil váš smazaný příspěvek."
+      one: "%{actors} se líbil váš smazaný příspěvek."
+      other: "%{actors} se líbil váš smazaný příspěvek."
+      zero: "%{actors} se líbil váš smazaný příspěvek."
     mentioned:
       few: "%{actors} vás zmínili na %{post_link}."
       one: "%{actors} vás zmínil(a) na %{post_link}."
@@ -407,18 +447,20 @@ cs:
       other: "%{actors} s vámi začali sdílet."
       zero: "%{actors} s vámi začali sdílet."
   notifier:
-    a_post_you_shared: "příspěvek"
+    a_post_you_shared: "příspěvek."
+    accept_invite: "Přijměte vaši pozvánku do Diaspory*!"
     click_here: "klikněte zde"
     comment_on_post:
-      reply: "Zobrazit zprávu od %{name} nebo na ni odpovědět »"
+      reply: "Zobrazit příspěvek od %{name} nebo na něj odpovědět »"
     confirm_email:
       click_link: "K aktivaci vaší nové e-mailové adresy %{unconfirmed_email} použijte prosím tento odkaz:"
       subject: "Prosím aktivujte si svou novou e-mailovou adresu %{unconfirmed_email}"
     email_sent_by_diaspora: "Tento e-mail odeslala Diaspora. Pokud si nepřejete nadále dostávat takovéto e-maily,"
     hello: "Vítej, %{name}!"
+    invited_you: "%{name} vás pozvali do Diaspory*"
     liked:
       liked: "%{name} si právě oblíbil(a) váš příspěvek"
-      view_post: "Zobrazit zprávu »"
+      view_post: "Zobrazit příspěvek »"
     mentioned:
       mentioned: "vás zmínil(a) v příspěvku:"
       subject: "%{name} vás zmínil(a) na Diaspoře*"
@@ -436,6 +478,7 @@ cs:
       view_profile: "Zobrazit profil %{name}"
     thanks: "Díky,"
     to_change_your_notification_settings: "upravte si nastavení oznámení."
+  nsfw: "Citlivý obsah (erotika, násilí a podobně)"
   ok: "Budiž"
   or: "nebo"
   password: "Heslo"
@@ -455,6 +498,7 @@ cs:
       no_one_found: "… a nikdo nebyl nalezen."
       no_results: "Hej! Musíte něco hledat."
       results_for: "výsledky hledání"
+      searching: "vyhledávám, prosím čekejte…"
     last_post: "Poslední příspěvek"
     many: "%{count} lidí"
     one: "1 člověk"
@@ -471,12 +515,13 @@ cs:
       gender: "pohlaví"
       in_aspects: "v aspektech"
       location: "poloha"
+      photos: "Fotky"
       remove_contact: "odstranit kontakt"
       remove_from: "Odstranit %{name} z %{aspect}?"
     show:
       closed_account: "Tento účet byl uzavřen."
       does_not_exist: "Osoba neexistuje!"
-      has_not_shared_with_you_yet: "%{name} s vámi zatím žádnou zprávu nesdílí!"
+      has_not_shared_with_you_yet: "%{name} s vámi zatím žádný příspěvek nesdílí!"
       ignoring: "Ignorujete všechny příspěvky od %{name}."
       incoming_request: "%{name} s vámi chce sdílet"
       mention: "Zmínka"
@@ -491,7 +536,7 @@ cs:
     sub_header:
       add_some: "přidat nějaké"
       edit: "upravit"
-      you_have_no_tags: "nemáš žádný štítek!"
+      you_have_no_tags: "nemáte žádný štítek!"
     two: "%{count} lidi"
     webfinger:
       fail: "Omlouváme se, ale %{handle} nebyl nalezen."
@@ -515,7 +560,7 @@ cs:
       invalid_ext: "{file} má chybnou příponu. Jsou povoleny pouze {extensions}."
       size_error: "{file} je přiliš veliký, maximální velikost je {sizeLimit}."
     new_profile_photo:
-      or_select_one_existing: "nebo vyberte z vašich již existujících %{photos}"
+      or_select_one_existing: "nebo vyberte ze svých již existujících %{photos}"
       upload: "Nahrajte novou profilovou fotku!"
     photo:
       view_all: "zobrazit všechny fotky uživatele %{name}"
@@ -525,7 +570,7 @@ cs:
       edit: "upravit"
       edit_delete_photo: "Upravit popis fotky / smazat fotku"
       make_profile_photo: "vytvořit profilovou fotku"
-      show_original_post: "Zobrazit původní zprávu"
+      show_original_post: "Zobrazit původní příspěvek"
       update_photo: "Aktualizovat fotku"
     update:
       error: "Nepodařilo se upravit fotku."
@@ -542,6 +587,7 @@ cs:
         one: "Jedna fotka uživatele %{author}"
         other: "%{count} fotek uživatele %{author}"
         zero: "Žádné fotky uživatele %{author}"
+      reshare_by: "Sdílel %{author}"
   previous: "předchozí"
   privacy: "Soukromí"
   privacy_policy: "Ochrana osobních údajů"
@@ -553,6 +599,8 @@ cs:
       first_name: "Jméno"
       last_name: "Příjmení"
       update_profile: "Aktualizovat profil"
+      you_are_nsfw: "Označili jste svůj proud jako obsahující citlivý obsah. Váš obsah bude skryt uživatelům, kteří si nepřejí vidět citlivý obsah."
+      you_are_safe_for_work: "Označili jste svůj proud jako neobsahující citlivý obsah. To znamená, že souhlasíte, že vámi zveřejňované příspěvky nebudou odporovat směrnicím komunity."
       your_bio: "Něco o vás"
       your_birthday: "Vaše narozeniny"
       your_gender: "Vaše pohlaví"
@@ -583,14 +631,22 @@ cs:
       password_to_confirm: "(potřebujeme vaše současné heslo pro potvrzení změn)"
       unhappy: "Nešťastný?"
       update: "Aktualizovat"
+    invalid_invite: "Odkaz  na pozvánku který jste poskytli již neplatí!"
     new:
+      continue: "Pokračovat"
       create_my_account: "Vytvořte mi účet!"
+      diaspora: "<3 Diaspora*"
+      email: "EMAIL"
       enter_email: "Zadejte e-mail"
-      enter_password: "Zadejte heslo"
+      enter_password: "Zadejte heslo (alespoň 6 znaků)"
       enter_password_again: "Zadejte stejné heslo jako předtím"
       enter_username: "Vyberte si uživatelské jméno (pouze písmena, číslice a podtržítka)"
       join_the_movement: "Připojte se k nám!"
+      password: "HESLO"
+      password_confirmation: "POTVRZENÍ HESLA"
+      sign_up: "ZAPSAT SE"
       sign_up_message: "Sociální síť se ♥"
+      username: "UŽIVATELSKÉ JMÉNO"
   requests:
     create:
       sending: "Odesílání"
@@ -602,10 +658,8 @@ cs:
     helper:
       new_requests:
         few: "%{count} nové žádosti!"
-        many: "%{count} nové žádosti!"
-        one: "nová žádost!"
+        one: "jedna nová žádost!"
         other: "%{count} nových žádostí!"
-        two: "%{count} nové žádosti!"
         zero: "žádné nové žádosti"
     manage_aspect_contacts:
       existing: "Existující kontakty"
@@ -613,15 +667,16 @@ cs:
     new_request_to_person:
       sent: "odesláno!"
   reshares:
+    comment_email_subject: "%{resharer} sdílel příspěvek uživatele %{author}"
     create:
       failure: "Při sdílení tohoto příspěvku došlo k chybě."
     reshare:
-      deleted: "Původní zpráva byla autorem odstraněna."
+      deleted: "Původní příspěvek byl autorem odstraněn."
       reshare:
-        few: "%{count} sdílení"
-        one: "1 sdílení"
-        other: "%{count} sdílení"
-        zero: "Sdílení"
+        few: "%{count}× sdíleno"
+        one: "Jednou sdíleno"
+        other: "%{count}× sdíleno"
+        zero: "Sdílet"
       reshare_confirmation: "Reshare %{author} - %{text}?"
       reshare_original: "Sdílet originál"
       reshared_via: "sdíleno pomocí"
@@ -637,7 +692,7 @@ cs:
     failure:
       error: "nastala chyba při připojení ke službě"
     finder:
-      fetching_contacts: "Diaspora právě zjištuje vaše přátele na %{service}, prosím zkuste to znovu za pár minut"
+      fetching_contacts: "Diaspora právě vyhledává vaše přátele na %{service}, prosím vraťte se za pár minut"
       no_friends: "Žádní přátelé na Facebooku nenalezeni."
       service_friends: "Přátelé na %{service}"
     index:
@@ -657,6 +712,10 @@ cs:
       not_on_diaspora: "Ještě není na Diaspoře"
       resend: "přeposlat"
   settings: "Nastavení"
+  share_visibilites:
+    update:
+      post_hidden_and_muted: "Příspěvky uživatele %{name} byly skryty a upozornění vypnuta."
+      see_it_on_their_profile: "Pokud chcete vidět změny tohoto příspěvku, navštivte profil uživatele %{name}."
   shared:
     add_contact:
       add_new_contact: "Přidat nový kontakt"
@@ -668,9 +727,9 @@ cs:
       add_to_aspect: "Přidat do aspektu"
       toggle:
         few: "Ve %{count} aspektech"
-        one: "V %{count} aspektu"
+        one: "V jednom aspektu"
         other: "V %{count} aspektech"
-        zero: "Přidat do aspektu"
+        zero: "Přidat kontakt"
     contact_list:
       all_contacts: "Všechny kontakty"
     footer:
@@ -685,6 +744,7 @@ cs:
       invite_your_friends: "Pozvěte vaše přátele"
       invites: "Pozvánky"
       invites_closed: "Pozvánky jsou aktuálně uzavřeny na tomto Diaspora podu"
+      share_this: "Sdílejte tento odkaz pomocí emailu, blogu, nebo oblíbené sociální sítě!"
     notification:
       new: "Nový %{type} od %{from}"
     public_explain:
@@ -692,11 +752,11 @@ cs:
       control_your_audience: "Ovládejte své obecenstvo"
       logged_in: "přihlášen do %{service}"
       manage: "upravit připojené služby"
-      new_user_welcome_message: "Používejte #štítky k označení svých zpráv a hledání lídí se stejnými zájmy.  Oslavujte úžasné lidi pomocí @Zmínek."
+      new_user_welcome_message: "Používejte #štítky k označení svých příspěvků a hledání lídí se stejnými zájmy.  Oslovujte úžasné lidi pomocí @Zmínek."
       outside: "Veřejné příspěvky budou dostupné i pro ostatní mimo Diasporu."
       share: "Sdílet"
       title: "Nastavit související služby"
-      visibility_dropdown: "Použijte tuto roletku pro změnu viditelnosti vašeho příspěvku.   (Váš první příspěvek doporučujeme udělat veřejný.)"
+      visibility_dropdown: "Použijte toto menu pro změnu viditelnosti svého příspěvku.   (Váš první příspěvek doporučujeme udělat veřejný.)"
     publisher:
       all: "všechny"
       all_contacts: "všechny kontakty"
@@ -707,8 +767,9 @@ cs:
         i_like: "Moje zájmy jsou %{tags}. "
         invited_by: "Díky za pozvání, "
         newhere: "Nováček"
-      post_a_message_to: "Poslat zprávu do %{aspect}"
+      post_a_message_to: "Poslat příspěvek do %{aspect}"
       posting: "Odesílám…"
+      preview: "Náhled"
       publishing_to: "publikování na:"
       share: "Sdílet"
       share_with: "sdílet s"
@@ -717,13 +778,19 @@ cs:
     reshare:
       reshare: "Sdílet jinam"
     stream_element:
+      connect_to_comment: "Spojte se s tímto uživatelem, abyste mohli komentovat jeho příspěvky."
+      currently_unavailable: "momentálně nelze přidávat komentáře"
       dislike: "to se mi nelíbí"
-      hide_and_mute: "Skrýt a nasadit roubík"
+      hide_and_mute: "Skrýt příspěvek"
       ignore_user: "Ignorovat %{name}"
+      ignore_user_description: "Chcete ignorovat tohoto uživatele a odebrat jej ze všech aspektů?"
       like: "to se mi líbí"
+      nsfw: "Tento příspěvek byl svým autorem označen jako citlivý obsah. %{link}"
       shared_with: "Sdíleno s: %{aspect_names}"
+      show: "zobrazit"
       unlike: "to se mi už nelíbí"
       via: "skrz %{link}"
+      via_mobile: "z mobilního telefonu"
       viewable_to_anyone: "Tento příspěvek je viditelný komukoli na webu"
   status_messages:
     create:
@@ -743,12 +810,12 @@ cs:
     hide_comments: "Skrýt všechny komentáře"
     show_comments:
       few: "Zobrazit %{count} dalších komentářů"
-      many: "Zobrazit %{count} dalších komentářů"
-      one: "Zobrazit 1 další komentář"
+      one: "Zobrazit jeden další komentář"
       other: "Zobrazit %{count} dalších komentářů"
-      two: "Zobrazit 2 další komentáře"
       zero: "Žádné další komentáře"
   streams:
+    activity:
+      title: "Moje aktivita"
     aspects:
       title: "Moje aspekty"
     aspects_stream: "Aspekty"
@@ -768,8 +835,15 @@ cs:
     mentions:
       contacts_title: "Lidé, kteří vás zmínili"
       title: "@Zmínky"
+    multi:
+      contacts_title: "Lidé ve vašem proudu"
+      title: "Proud"
+    public:
+      contacts_title: "Nedávní přispěvatelé"
     tags:
       contacts_title: "Lidé, kteří navěšují tento štítek"
+      tag_prefill_text: "%{tag_name} je o… "
+      title: "Příspěvky označené: %{tags}"
   tag_followings:
     create:
       failure: "Nepodařilo se odebírat #%{name}.  Neodebíráte už náhodou tento štítek?"
@@ -792,14 +866,14 @@ cs:
   tokens:
     show:
       connect_to_cubbies: "Připojit na Cubbi.es"
-      connecting_is_simple: "Připojení účtu na Diaspoře je tak jednoduché! Zadejte své Diaspora ID (<b>%{diaspora_id}</b>) z <a href='%{href_link}'>nastavení cubbies</a> a připojte se."
+      connecting_is_simple: "Připojení účtu z Diaspory je tak jednoduché!  Zadejte své Diaspora ID (<b>%{diaspora_id}</b>) z <a href='%{href_link}'>nastavení cubbies</a> a připojte se."
       love_to_try: "Rádi bychom, abyste ji vyzkoušeli."
       making_the_connection: "Vytvářím spojení"
       screenshot_explanation: "%{link1}. Tato konkrétní cubby je připojena na %{link2}."
       sign_up_today: "Registrujte se ještě dnes!"
       typical_userpage: "Typická uživatelská stránka na cubbi.es"
       via: "(pomocí %{link})"
-      what_is_cubbies: "Cubbi.es je celosvětově první aplikace Diaspory. Je to také nejlepší způsob, jak shromažďovat fotografie online."
+      what_is_cubbies: "Cubbi.es je celosvětově první aplikace pro Diasporu.  Je to také nejlepší způsob, jak shromažďovat fotografie online."
   undo: "Vrátit zpět?"
   username: "Uživatelské jméno"
   users:
@@ -808,8 +882,8 @@ cs:
       email_not_confirmed: "E-mail nemohl být aktivován. Špatný odkaz?"
     destroy:
       no_password: "Prosím zadejte své současné heslo, aby váš účet mohl být uzavřen."
-      success: "Váš účet byl uzamčen.  Uzavření vašeho účtu nám může trvat až 20 minut.  Děkujeme za vyzkoušení Diaspory."
-      wrong_password: "Zadané heslo není vaše současné heslo."
+      success: "Váš účet byl uzamčen.  Uzavření vašeho účtu může trvat až 20 minut.  Děkujeme za vyzkoušení Diaspory."
+      wrong_password: "Zadané heslo nesouhlasí s vaším současným heslem."
     edit:
       also_commented: "…někdo komentoval příspěvek vašeho kontaktu?"
       auto_follow_back: "Automaticky sledovat toho, kdo sleduje vás"
@@ -820,7 +894,7 @@ cs:
       close_account:
         dont_go: "Prosíme, neodcházejte!"
         if_you_want_this: "Pokud toto opravdu chcete, zadejte níže své heslo a stiskněte „Uzavřít účet“"
-        lock_username: "Tím pádem bude vaše uživatelské jméno nedostupné, pokud se rozhodnete se znovu přihlásit."
+        lock_username: "Tím pádem bude vaše uživatelské jméno nedostupné, pokud se rozhodnete se vrátit."
         locked_out: "Budete odhlášeni a váš účet bude uzamčen."
         make_diaspora_better: "Chtěli bychom, abyste nám pomohli udělat Diasporu lepší, tak nám prosím pomozte a neopouštějte nás. Pokud však opravdu chcete odejít, chceme vám sdělit, co bude následovat."
         mr_wiggles: "Ostatní uživatelé budou plakat."
@@ -834,7 +908,8 @@ cs:
       edit_account: "Upravit účet"
       email_awaiting_confirmation: "Na adresu %{unconfirmed_email} byl zaslán aktivační odkaz. Dokud tento odkaz neotevřete a svou novou adresu neaktivujete, budeme vás kontaktovat na vaší staré adrese %{email}."
       export_data: "Exportovat data"
-      getting_started: "Nastavení nového uživatele"
+      following: "Nastavení sledování"
+      getting_started: "Předvolby nového uživatele"
       liked: "…někomu se zalíbí váš příspěvek?"
       mentioned: "…někdo vás zmíní v příspěvku?"
       new_password: "Nové heslo"
@@ -849,21 +924,21 @@ cs:
       awesome_take_me_to_diaspora: "Úžasné! Vezměte mě do Diaspory*"
       community_welcome: "Komunita Diaspory je šťastná, že jste se přidali!"
       hashtag_explanation: "Štítky vám dovolují odebírat to, o co se zajímáte, a diskutovat o tom.  Je to také skvělý způsob, jak na Diaspoře najít nové přátele."
-      hashtag_suggestions: "Zkuste odebírat třeba štítky #umění, #filmy, #gif, atd."
-      hooking_up_fb: "napojením na váš účet na Facebooku"
+      hashtag_suggestions: "Zkuste odebírat třeba štítky #umění, #filmy, #gif a podobně."
       saved: "Uloženo!"
-      we_can_speed_things_up: "Můžeme pár věcí urychlit"
       well_hello_there: "Jé, ahojte!"
-      what_facebook_does: "to Diaspora. This will pull your name and photo, and enable cross-positng."
+      what_are_you_in_to: "Co vás zajímá?"
       who_are_you: "Kdo jste?"
-    logged_out:
-      signed_out: "Odhlásili jste se z Diaspory*"
     privacy_settings:
+      ignored_users: "Ignorovaní uživatelé"
+      stop_ignoring: "Přestat ignorovat"
       title: "Nastavení soukromí"
     public:
       does_not_exist: "Uživatel %{username} neexistuje!"
     update:
       email_notifications_changed: "Oznámení e-mailem změněno"
+      follow_settings_changed: "Následující nastavení se změnily"
+      follow_settings_not_changed: "Následující nastavení se nepodařilo změnit"
       language_changed: "Jazyk změněn"
       language_not_changed: "Změna jazyka selhala"
       password_changed: "Heslo bylo změněno. Nyní se můžete přihlásit s vaším novým heslem."

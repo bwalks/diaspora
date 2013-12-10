@@ -1,4 +1,4 @@
-#   Copyright (c) 2010-2012, Diaspora Inc.  This file is
+#   Copyright (c) 2010-2013, Diaspora Inc.  This file is
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
@@ -16,6 +16,7 @@ cs:
       invalid: "Neplatné uživatelské jméno nebo heslo."
       invalid_token: "Neplatný autentizační token."
       locked: "Váš účet je uzamčen."
+      not_found_in_database: "Chybný email nebo heslo."
       timeout: "Vaše sezení vypršelo, pro pokračování se prosím přihlašte znovu."
       unauthenticated: "Pro pokračování se musíte přihlásit nebo si vytvořit účet."
       unconfirmed: "Před pokračováním musíte potvrdit svůj účet."
@@ -32,19 +33,27 @@ cs:
       invitation_instructions:
         accept: "Přijmout pozvání"
         be_yourself: "Buďte sami sebou"
+        cubbies: "Cubbi.es"
         displaying_correctly: "E-mail se nezobrazuje správně? %{link}"
+        email_address: "questions@joindiaspora.com"
+        email_us: "Máte-li nějaké dotazy nebo potřebujete-li pomoci s vaším Diaspora účtem, kontaktujte nás prosím na e-mailu %{email}."
         finally: "Konečně — je to tady"
         friends_saying: "Co říkají vaši přátelé…"
+        get_connected: "Připojte se"
         have_fun: "Bavte se"
+        help_fund: "pomozte financovat Diasporu"
         here: "zde"
         ignore: "Pokud nechcete přijmout pozvání, prosím ignorujte tento e-mail."
+        join_team: "Přidejte se k nám"
         love: "S láskou,"
+        made_by_people: "%{strong_diaspora} je tvořena lidmi, kteří milují internet tak jako vy. %{jointeam} nebo %{helpfund}!"
         more_people: "A ještě další lidé se těší na to, až vás uvidí!"
         no_account_till: "Váš účet nebude vytvořen, dokud nenavštívíte uvedený odkaz a nezaregistrujete se."
         or: "nebo"
         sign_up_now: "Přihlaste se ještě dnes →"
         subject: "Byli jste pozváni na Diasporu!"
         team_diaspora: "Tým Diaspory"
+        unsubscribe: "Pro odhlášení klikněte na %{link}."
         view_in: "Zobrazte si jej ve svém prohlížeči."
       inviter:
         accept_at: "na %{url}, přijmout pozvání můžete pomocí odkazu níže."

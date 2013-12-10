@@ -2,9 +2,6 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
-require 'uri'
-require File.join(Rails.root, 'lib/hcard')
-
 class Person < ActiveRecord::Base
   include ROXML
   include Encryptor::Public
@@ -32,10 +29,13 @@ class Person < ActiveRecord::Base
   xml_attr :exported_key
 
   has_one :profile, :dependent => :destroy
-  delegate :last_name, :image_url, :to => :profile
+  delegate :last_name, :image_url, :tag_string, :bio, :location,
+           :gender, :birthday, :formatted_birthday, :tags, :searchable,
+           to: :profile
   accepts_nested_attributes_for :profile
 
   before_validation :downcase_diaspora_handle
+
   def downcase_diaspora_handle
     diaspora_handle.downcase! unless diaspora_handle.blank?
   end
@@ -45,6 +45,8 @@ class Person < ActiveRecord::Base
   has_many :photos, :foreign_key => :author_id, :dependent => :destroy # This person's own photos
   has_many :comments, :foreign_key => :author_id, :dependent => :destroy # This person's own comments
   has_many :participations, :foreign_key => :author_id, :dependent => :destroy
+
+  has_many :roles
 
   belongs_to :owner, :class_name => 'User'
 
@@ -68,7 +70,8 @@ class Person < ActiveRecord::Base
   # @note user is passed in here defensively
   scope :all_from_aspects, lambda { |aspect_ids, user|
     joins(:contacts => :aspect_memberships).
-         where(:contacts => {:user_id => user.id}, :aspect_memberships => {:aspect_id => aspect_ids})
+         where(:contacts => {:user_id => user.id}).
+         where(:aspect_memberships => {:aspect_id => aspect_ids})
   }
 
   scope :unique_from_aspects, lambda{ |aspect_ids, user|
@@ -78,17 +81,17 @@ class Person < ActiveRecord::Base
   #not defensive
   scope :in_aspects, lambda { |aspect_ids|
     joins(:contacts => :aspect_memberships).
-        where(:contacts => { :aspect_memberships => {:aspect_id => aspect_ids}})
+        where(:aspect_memberships => {:aspect_id => aspect_ids})
   }
 
-  scope :profile_tagged_with, lambda{|tag_name| joins(:profile => :tags).where(:profile => {:tags => {:name => tag_name}}).where('profiles.searchable IS TRUE') }
+  scope :profile_tagged_with, lambda{|tag_name| joins(:profile => :tags).where(:tags => {:name => tag_name}).where('profiles.searchable IS TRUE') }
 
   scope :who_have_reshared_a_users_posts, lambda{|user|
     joins(:posts).where(:posts => {:root_guid => StatusMessage.guids_for_author(user.person), :type => 'Reshare'} )
   }
 
   def self.community_spotlight
-    AppConfig[:community_spotlight].present? ? Person.where(:diaspora_handle => AppConfig[:community_spotlight]) : []
+    Person.joins(:roles).where(:roles => {:name => 'spotlight'})
   end
 
   # Set a default of an empty profile when a new Person record is instantiated.
@@ -123,7 +126,7 @@ class Person < ActiveRecord::Base
 
   def self.search_query_string(query)
     query = query.downcase
-    like_operator = postgres? ? "ILIKE" : "LIKE"
+    like_operator = AppConfig.postgres? ? "ILIKE" : "LIKE"
 
     where_clause = <<-SQL
       profiles.full_name #{like_operator} ? OR
@@ -152,19 +155,13 @@ class Person < ActiveRecord::Base
   # @return [Array<String>] postgreSQL and mysql deal with null values in orders differently, it seems.
   def self.search_order
     @search_order ||= Proc.new {
-      order = if postgres?
+      order = if AppConfig.postgres?
         "ASC"
       else
         "DESC"
       end
       ["contacts.user_id #{order}", "profiles.last_name ASC", "profiles.first_name ASC"]
     }.call
-  end
-
-  def self.public_search(query, opts={})
-    return [] if query.to_s.blank? || query.to_s.length < 3
-    sql, tokens = self.search_query_string(query)
-    Person.searchable.where(sql, *tokens)
   end
 
   def name(opts = {})
@@ -306,6 +303,11 @@ class Person < ActiveRecord::Base
     end
   end
 
+  #gross method pulled out from controller, not exactly sure how it should be used.
+  def shares_with(user)
+    user.contacts.receiving.where(:person_id => self.id).first if user
+  end
+
   # @param person [Person]
   # @param url [String]
   def update_url(url)
@@ -336,6 +338,7 @@ class Person < ActiveRecord::Base
   end
 
   private
+
   def fix_profile
     Webfinger.new(self.diaspora_handle).fetch
     self.reload

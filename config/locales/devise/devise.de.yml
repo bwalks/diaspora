@@ -1,4 +1,4 @@
-#   Copyright (c) 2010-2012, Diaspora Inc.  This file is
+#   Copyright (c) 2010-2013, Diaspora Inc.  This file is
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
@@ -16,6 +16,7 @@ de:
       invalid: "Ungültiger Benutzername oder ungültiges Kennwort."
       invalid_token: "Ungültiger Authentifizierungstoken."
       locked: "Dein Konto ist gesperrt."
+      not_found_in_database: "Passwort oder E-Mail-Adresse ungültig"
       timeout: "Deine Sitzung ist abgelaufen! Um fortzufahren, melde dich bitte erneut an."
       unauthenticated: "Du musst dich anmelden oder registrieren, um fortzufahren."
       unconfirmed: "Du musst dein Konto bestätigen, um fortzufahren."
@@ -36,6 +37,7 @@ de:
         be_yourself_paragraph: "Das Internet hat einzigartige Möglichkeiten entwickelt, um uns auszudrücken. %{strong_diaspora} lässt dich du selbst sein und teilen, was du möchtest, mit oder ohne deinem echten Namen."
         cubbies: "Cubbi.es"
         displaying_correctly: "E-Mail-Darstellung nicht lesbar? %{link}"
+        email_address: ""
         email_us: "Für allgemeine Anfragen oder Unterstützung für dein Diaspora-Konto, schreibe uns ein E-Mail an %{email}."
         finally: "Endlich - Es ist da"
         friends_saying: "Was deine Freunde sagen..."
@@ -59,7 +61,8 @@ de:
         view_in: "In deinem Webbrowser anzeigen"
       inviter:
         accept_at: "unter %{url}, kannst du sie über den untenstehenden Link akzeptieren."
-        have_invited_you: "%{names} hat Dich eingeladen Diaspora beizutreten"
+        has_invited_you: ""
+        have_invited_you: "%{names} haben Dich eingeladen Diaspora beizutreten"
       reset_password_instructions:
         change: "Mein Kennwort ändern"
         ignore: "Wenn du dies nicht angefordert hast, ignoriere bitte diese E-Mail."
@@ -88,7 +91,7 @@ de:
     sessions:
       new:
         alpha_software: "Diese Software befindet sich im Alpha-Stadium."
-        bugs_and_feedback: "Sei gewarnt, Fehler werden auftreten. Wir empfehlen dir, den Feedback-Knopf am rechten Browserrand zu nutzen, um alle Störungen zu berichten. Wir werden so schnell wir können arbeiten, um alle Probleme, die du meldest, zu lösen."
+        bugs_and_feedback: "Eine Warnung vorweg: Es gibt noch Bugs. Am besten du benutzt den Feedback Button auf der rechten Seite deines Browsers, um uns über die Probleme aufzuklären. Wir versuchen, diese so schnell wie möglich zu berichtigen."
         bugs_and_feedback_mobile: "Sei gewarnt, Fehler werden auftreten. Wir empfehlen dir, alle Störungen zu melden! Wir werden so schnell wir können arbeiten, um alle Probleme, die du meldest, zu lösen."
         login: "Anmelden"
         modern_browsers: "unterstützt nur moderne Browser."
@@ -116,5 +119,5 @@ de:
   errors:
     messages:
       already_confirmed: "wurde bereits bestätigt"
-      not_found: "wurde nicht gefunden"
+      not_found: "nicht gefunden"
       not_locked: "war nicht gesperrt"

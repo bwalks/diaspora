@@ -1,56 +1,37 @@
-## Welcome to the Diaspora Project!
+# diaspora* 
+### a privacy aware, distributed, open source social network
 
-Diaspora is a privacy-aware, personally-controlled, do-it-all open source social network. Check out our [project site](http://diasporaproject.org).
-
-[![Build Status](https://secure.travis-ci.org/diaspora/diaspora.png)](http://travis-ci.org/diaspora/diaspora)
+**master:** [![Build Status master](https://secure.travis-ci.org/diaspora/diaspora.png?branch=master)](http://travis-ci.org/diaspora/diaspora)
+**develop:** [![Build Status develop](https://secure.travis-ci.org/diaspora/diaspora.png?branch=develop)](http://travis-ci.org/diaspora/diaspora) |
 [![Dependency Status](https://gemnasium.com/diaspora/diaspora.png?travis)](https://gemnasium.com/diaspora/diaspora)
+[![Code Climate](https://codeclimate.com/github/diaspora/diaspora.png)](https://codeclimate.com/github/diaspora/diaspora)
 
-************************
-Diaspora is currently going through a huge refactoring push, the code is changing fast!
-If you want to do something big, reach out on IRC or the mailing list first, so you can contribute effectively <3333
-************************
+[Project site](https://diasporafoundation.org) |
+[Wiki](https://wiki.diasporafoundation.org) |
+[Bugtracker](http://github.com/diaspora/diaspora/issues) |
+[Discussions](https://www.loomio.org/groups/194) |
+[Mailing lists](https://wiki.diasporafoundation.org/How_We_Communicate#Mailing_Lists) |
+[License](/COPYRIGHT) |
+[Authors](https://github.com/diaspora/diaspora/contributors)
 
-With Diaspora you can:
-
-- Run and host your own pod and have control over your own social experience.
-- Own your own data.
-- Make friends across other pods seamlessly.
-
-Documentation is available on our [wiki](https://github.com/diaspora/diaspora/wiki)
-
-[Pull Request Guidelines](https://github.com/diaspora/diaspora/wiki/Pull-Request-Guidelines)
-
-Before submitting code, feel free to sign our [Contributor License Agreement](https://github.com/diaspora/diaspora/wiki/New-CLA--12-13-10) [Sign Here](https://spreadsheets.google.com/a/joindiaspora.com/spreadsheet/viewform?formkey=dFdRTnY0TGtfaklKQXZNUndsMlJ2eGc6MQ)
-
-## Quick Start:
-
-Here's how you can get a development environment up and running. You can check out system-specific guides [here](https://github.com/diaspora/diaspora/wiki/Installation-Guides).
-
-### Step 1: Download the script
-```
-  curl https://raw.github.com/diaspora/diaspora/master/script/install.sh | /bin/sh
-```
-
-### Step 2: Follow the instructions
+## Installation
 
 
-### Step 3: Run the the development server
-```
-  rails s
-```
+You don't have to install diaspora* to use the network. There are many servers connected to diaspora*s network which are open to anyone, and you can create an account on one of these servers. Have a look at our [tips for finding a home](https://wiki.diasporafoundation.org/Choosing_a_pod), or you can just go straight to the [list of open servers](http://podupti.me) to sign up.
 
-then visit 'http://localhost:3000' in your browser.
+Want to own your data and install diaspora*? Whether you just want to try it out, want to install it on your server or want to contribute and need a development setup, our [installation guides](https://wiki.diasporafoundation.org/Installation) will get you started!
 
-### Step 4: Run tests
-```
-  rake
-```
+## Questions?
 
-## Resources:
+Have a look at our FAQs [for users](https://wiki.diasporafoundation.org/FAQ_for_users), [for pod administrators](https://wiki.diasporafoundation.org/FAQ_for_pod_maintainers) or [for developers](https://wiki.diasporafoundation.org/FAQ_for_developers).
 
-- [Wiki](https://github.com/diaspora/diaspora/wiki)
-- [Podmin Resources](https://github.com/diaspora/diaspora/wiki/Podmin-Resources)
-- [Contributing](https://github.com/diaspora/diaspora/wiki/Getting-Started-With-Contributing)
-- [Dev List](https://groups.google.com/forum/?fromgroups#!forum/diaspora-dev)
-- [Discuss List](https://groups.google.com/forum/?fromgroups#!forum/diaspora-discuss)
-- [IRC](http://webchat.freenode.net?channels=diaspora-dev)
+Still haven't found an answer? Talk to us! Read [how we communicate](https://wiki.diasporafoundation.org/How_we_communicate). We're here to answer all your questions.
+
+## Contribute
+
+To keep diaspora*  growing and improving we need all help we can get. Whether you can contribute [code](https://wiki.diasporafoundation.org/Getting_started_with_contributing), [ideas](https://wiki.diasporafoundation.org/How_we_communicate#Loomio), [translations](https://wiki.diasporafoundation.org/Contribute_translations), [bug reports](https://wiki.diasporafoundation.org/How_to_report_a_bug) or simply extend the community as a [helpful user](https://wiki.diasporafoundation.org/Welcoming_committee) or [pod administrator](https://wiki.diasporafoundation.org/Installation), your help is welcome!
+
+## Security
+
+Found a security issue? Please disclose it responsibly. We have a team of developers listening to [security@diasporafoundation.org](mailto:security@diasporafoundation.org). The PGP fingerprint is [AB0D AB02 0FC5 D398 03AB 3CE1 6F70 243F 27AD 886A](http://pgp.mit.edu:11371/pks/lookup?op=get&search=0x6F70243F27AD886A)
+

@@ -16,15 +16,6 @@ module PeopleHelper
     end
   end
 
-  def request_partial single_aspect_form
-    if single_aspect_form
-      'requests/new_request_with_aspect_to_person'
-
-    else
-      'requests/new_request_to_person'
-    end
-  end
-
   def search_or_index
     if search_query
       I18n.t 'people.helper.results_for',:params => search_query
@@ -48,9 +39,14 @@ module PeopleHelper
     "<a data-hovercard='#{remote_or_hovercard_link}' #{person_href(person)} class='#{opts[:class]}' #{ ("target=" + opts[:target]) if opts[:target]}>#{h(person.name)}</a>".html_safe
   end
 
-  def person_image_tag(person, size=nil)
-    size ||= :thumb_small
-    "<img alt=\"#{h(person.name)}\" class=\"avatar\" data-person_id=\"#{person.id}\" src=\"#{person.profile.image_url(size)}\" title=\"#{h(person.name)}\">".html_safe
+  def last_visible_post_for(person, current_user=nil)
+    unless Post.visible_from_author(person, current_user).empty?
+      link_to(t('people.last_post'), last_post_person_path(person.to_param))
+    end
+  end
+
+  def person_image_tag(person, size = :thumb_small)
+    image_tag(person.profile.image_url(size), :alt => person.name, :class => 'avatar', :title => person.name, 'data-person_id' => person.id)
   end
 
   def person_image_link(person, opts={})
@@ -70,7 +66,7 @@ module PeopleHelper
 
   # Rails.application.routes.url_helpers is needed since this is indirectly called from a model
   def local_or_remote_person_path(person, opts={})
-    opts.merge!(:protocol => AppConfig[:pod_uri].scheme, :host => AppConfig[:pod_uri].authority)
+    opts.merge!(:protocol => AppConfig.pod_uri.scheme, :host => AppConfig.pod_uri.authority)
     absolute = opts.delete(:absolute)
 
     if person.local?
@@ -89,6 +85,32 @@ module PeopleHelper
       return Rails.application.routes.url_helpers.person_url(person, opts)
     else
       return Rails.application.routes.url_helpers.person_path(person, opts)
+    end
+  end
+
+  def sharing_message(person, contact)
+    if contact.sharing?
+      content_tag(:div, :class => 'sharing_message_container', :title => I18n.t('people.helper.is_sharing', :name => person.name)) do
+        content_tag(:div, nil, :class => 'icons-check_yes_ok', :id => 'sharing_message')
+      end
+    else
+      content_tag(:div, :class => 'sharing_message_container', :title => I18n.t('people.helper.is_not_sharing', :name => person.name)) do
+        content_tag(:div, nil, :class => 'icons-circle', :id => 'sharing_message')
+      end
+    end
+  end
+
+  def profile_buttons_class(contact, block)
+    if block.present?
+      'blocked'
+    elsif contact.mutual?
+      'mutual'
+    elsif contact.sharing?
+      'only_sharing'
+    elsif contact.receiving?
+      'receiving'
+    else
+      'not_sharing'
     end
   end
 end

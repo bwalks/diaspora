@@ -1,6 +1,5 @@
-require File.join(Rails.root, "lib", "publisher")
 class Stream::Base
-  TYPES_OF_POST_IN_STREAM = ['StatusMessage', 'Reshare', 'ActivityStreams::Photo']
+  TYPES_OF_POST_IN_STREAM = ['StatusMessage', 'Reshare']
 
   attr_accessor :max_time, :order, :user, :publisher
 
@@ -40,7 +39,6 @@ class Stream::Base
   def stream_posts
     self.posts.for_a_stream(max_time, order, self.user).tap do |posts|
       like_posts_for_stream!(posts) #some sql person could probably do this with joins.
-      participation_posts_for_stream!(posts)
     end
   end
 
@@ -49,11 +47,6 @@ class Stream::Base
     people_ids = self.stream_posts.map{|x| x.author_id}
     Person.where(:id => people_ids).
       includes(:profile)
-  end
-
-  # @return [String]
-  def contacts_link_title
-    I18n.translate('aspects.selected_contacts.view_all_contacts')
   end
 
   # @return [String] def contacts_title 'change me in lib/base_stream.rb!'
@@ -101,7 +94,7 @@ class Stream::Base
   def like_posts_for_stream!(posts)
     return posts unless @user
 
-    likes = Like.where(:author_id => @user.person.id, :target_id => posts.map(&:id), :target_type => "Post")
+    likes = Like.where(:author_id => @user.person_id, :target_id => posts.map(&:id), :target_type => "Post")
 
     like_hash = likes.inject({}) do |hash, like|
       hash[like.target_id] = like
@@ -110,22 +103,6 @@ class Stream::Base
 
     posts.each do |post|
       post.user_like = like_hash[post.id]
-    end
-  end
-
-  # @return [void]
-  def participation_posts_for_stream!(posts)
-    return posts unless @user
-
-    participations = Participation.where(:author_id => @user.person.id, :target_id => posts.map(&:id), :target_type => "Post")
-
-    participation_hash = participations.inject({}) do |hash, participation|
-      hash[participation.target_id] = participation
-      hash
-    end
-
-    posts.each do |post|
-      post.user_participation = participation_hash[post.id]
     end
   end
 
@@ -141,16 +118,12 @@ class Stream::Base
     @contacts_in_stream ||= Contact.where(:user_id => user.id, :person_id => people.map{|x| x.id}).all
   end
 
-  def spotlight_diaspora_id
-    @spotlight_diaspora_id ||= AppConfig[:community_spotlight].try(:sample, 1)
-  end
-
   # @param post [Post]
   # @return [Boolean]
   def post_is_from_contact?(post)
     @can_comment_cache ||= {}
     @can_comment_cache[post.id] ||= contacts_in_stream.find{|contact| contact.person_id == post.author.id}.present?
-    @can_comment_cache[post.id] ||= (user.person.id == post.author.id)
+    @can_comment_cache[post.id] ||= (user.person_id == post.author_id)
     @can_comment_cache[post.id]
   end
 end

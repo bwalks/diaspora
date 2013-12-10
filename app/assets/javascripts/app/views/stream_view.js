@@ -1,4 +1,8 @@
-app.views.Stream = Backbone.View.extend(_.extend( app.views.infiniteScrollMixin, {
+//= require ./stream/shortcuts
+
+app.views.Stream = app.views.InfScroll.extend(_.extend(
+  app.views.StreamShortcuts, {
+  	
   initialize: function(options) {
     this.stream = this.model
     this.collection = this.stream.items
@@ -8,6 +12,7 @@ app.views.Stream = Backbone.View.extend(_.extend( app.views.infiniteScrollMixin,
     this.setupNSFW()
     this.setupLightbox()
     this.setupInfiniteScroll()
+    this.setupShortcuts()
   },
 
   postClass : app.views.StreamPost,

@@ -2,13 +2,12 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
+#TODO: kill me
 class Invitation < ActiveRecord::Base
 
   belongs_to :sender, :class_name => 'User'
   belongs_to :recipient, :class_name => 'User'
   belongs_to :aspect
-
-  attr_accessible :sender, :recipient, :aspect, :language, :service, :identifier, :admin, :message
 
   before_validation :set_email_as_default_service
 
@@ -99,11 +98,7 @@ class Invitation < ActiveRecord::Base
     when 'email'
       self.identifier
     when'facebook'
-      if su = ServiceUser.where(:uid => self.identifier).first
-        su.name
-      else
-        I18n.t('invitations.a_facebook_user')
-      end
+      I18n.t('invitations.a_facebook_user')
     end
   end
   

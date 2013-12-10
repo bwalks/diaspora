@@ -14,10 +14,10 @@ describe Post do
     describe '.owned_or_visible_by_user' do
       before do
         @you = bob
-        @public_post = Factory(:status_message, :public => true)
-        @your_post = Factory(:status_message, :author => @you.person)
+        @public_post = FactoryGirl.create(:status_message, :public => true)
+        @your_post = FactoryGirl.create(:status_message, :author => @you.person)
         @post_from_contact = eve.post(:status_message, :text => 'wooo', :to => eve.aspects.where(:name => 'generic').first)
-        @post_from_stranger = Factory(:status_message, :public => false)
+        @post_from_stranger = FactoryGirl.create(:status_message, :public => false)
       end
 
       it 'returns post from your contacts' do
@@ -33,7 +33,7 @@ describe Post do
       end
 
       it 'returns public post from your contact' do
-        sm = Factory(:status_message, :author => eve.person, :public => true)
+        sm = FactoryGirl.create(:status_message, :author => eve.person, :public => true)
 
         StatusMessage.owned_or_visible_by_user(@you).should include(sm)
       end
@@ -68,8 +68,8 @@ describe Post do
 
     describe '.excluding_blocks' do
       before do
-        @post = Factory(:status_message, :author => alice.person)
-        @other_post = Factory(:status_message, :author => eve.person)
+        @post = FactoryGirl.create(:status_message, :author => alice.person)
+        @other_post = FactoryGirl.create(:status_message, :author => eve.person)
 
         bob.blocks.create(:person => alice.person)
       end
@@ -89,8 +89,8 @@ describe Post do
 
     describe '.excluding_hidden_shareables' do
       before do
-        @post = Factory(:status_message, :author => alice.person)
-        @other_post = Factory(:status_message, :author => eve.person)
+        @post = FactoryGirl.create(:status_message, :author => alice.person)
+        @other_post = FactoryGirl.create(:status_message, :author => eve.person)
         bob.toggle_hidden_shareable(@post)
       end
       it 'excludes posts the user has hidden' do
@@ -169,21 +169,21 @@ describe Post do
 
   describe 'validations' do
     it 'validates uniqueness of guid and does not throw a db error' do
-      message = Factory(:status_message)
-      Factory.build(:status_message, :guid => message.guid).should_not be_valid
+      message = FactoryGirl.create(:status_message)
+      FactoryGirl.build(:status_message, :guid => message.guid).should_not be_valid
     end
   end
 
   describe 'post_type' do
     it 'returns the class constant' do
-      status_message = Factory(:status_message)
+      status_message = FactoryGirl.create(:status_message)
       status_message.post_type.should == "StatusMessage"
     end
   end
 
   describe 'deletion' do
     it 'should delete a posts comments on delete' do
-      post = Factory(:status_message, :author => @user.person)
+      post = FactoryGirl.create(:status_message, :author => @user.person)
       @user.comment!(post, "hey")
       post.destroy
       Post.where(:id => post.id).empty?.should == true
@@ -203,7 +203,7 @@ describe Post do
 
   describe '.diaspora_initialize' do
     it 'takes provider_display_name' do
-      sm = Factory.build(:status_message, :provider_display_name => 'mobile')
+      sm = FactoryGirl.create(:status_message, :provider_display_name => 'mobile')
       StatusMessage.diaspora_initialize(sm.attributes.merge(:author => bob.person)).provider_display_name.should == 'mobile'
     end
   end
@@ -245,7 +245,7 @@ describe Post do
 
   describe "#receive" do
     it 'returns false if the post does not verify' do
-      @post = Factory(:status_message, :author => bob.person)
+      @post = FactoryGirl.create(:status_message, :author => bob.person)
       @post.should_receive(:verify_persisted_shareable).and_return(false)
       @post.receive(bob, eve.person).should == false
     end
@@ -253,7 +253,7 @@ describe Post do
 
   describe "#receive_persisted" do
     before do
-      @post = Factory.build(:status_message, :author => bob.person)
+      @post = FactoryGirl.create(:status_message, :author => bob.person)
       @known_post = Post.new
       bob.stub(:contact_for).with(eve.person).and_return(stub(:receive_shareable => true))
     end
@@ -298,7 +298,7 @@ describe Post do
   describe '#receive_non_persisted' do
     context "the user does not know about the post" do
       before do
-        @post = Factory.build(:status_message, :author => bob.person)
+        @post = FactoryGirl.create(:status_message, :author => bob.person)
         bob.stub(:find_visible_shareable_by_id).and_return(nil)
         bob.stub(:notify_if_mentioned).and_return(true)
       end
@@ -337,7 +337,7 @@ describe Post do
     describe 'when post has been reshared exactly 1 time' do
       before :each do
         @post.reshares.size.should == 0
-        @reshare = Factory(:reshare, :root => @post)
+        @reshare = FactoryGirl.create(:reshare, :root => @post)
         @post.reload
         @post.reshares.size.should == 1
       end
@@ -350,9 +350,9 @@ describe Post do
     describe 'when post has been reshared more than once' do
       before :each do
         @post.reshares.size.should == 0
-        Factory(:reshare, :root => @post)
-        Factory(:reshare, :root => @post)
-        Factory(:reshare, :root => @post)
+        FactoryGirl.create(:reshare, :root => @post)
+        FactoryGirl.create(:reshare, :root => @post)
+        FactoryGirl.create(:reshare, :root => @post)
         @post.reload
         @post.reshares.size.should == 3
       end
@@ -365,10 +365,48 @@ describe Post do
 
   describe "#after_create" do
     it "sets #interacted_at" do
-      post = Factory(:status_message)
+      post = FactoryGirl.create(:status_message)
       post.interacted_at.should_not be_blank
     end
   end
 
+  describe "#find_by_guid_or_id_with_user" do
+    it "succeeds with an id" do
+      post = FactoryGirl.create :status_message, public: true
+      Post.find_by_guid_or_id_with_user(post.id).should == post
+    end
 
+    it "succeeds with an guid" do
+      post = FactoryGirl.create :status_message, public: true
+      Post.find_by_guid_or_id_with_user(post.guid).should == post
+    end
+
+    it "looks up on the passed user object if it's non-nil" do
+      post = FactoryGirl.create :status_message
+      user = mock
+      user.should_receive(:find_visible_shareable_by_id).with(Post, post.id, key: :id).and_return(post)
+      Post.find_by_guid_or_id_with_user post.id, user
+    end
+
+    it "raises ActiveRecord::RecordNotFound with a non-existing id and a user" do
+      user = stub(find_visible_shareable_by_id: nil)
+      expect {
+        Post.find_by_guid_or_id_with_user 123, user
+      }.to raise_error ActiveRecord::RecordNotFound
+    end
+
+    it "raises Diaspora::NonPublic for a non-existing id without a user" do
+      Post.stub where: stub(includes: stub(first: nil))
+      expect {
+        Post.find_by_guid_or_id_with_user 123
+      }.to raise_error Diaspora::NonPublic
+    end
+
+    it "raises Diaspora::NonPublic for a private post without a user" do
+      post = FactoryGirl.create :status_message
+      expect {
+        Post.find_by_guid_or_id_with_user post.id
+      }.to raise_error Diaspora::NonPublic
+    end
+  end
 end

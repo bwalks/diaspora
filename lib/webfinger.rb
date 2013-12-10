@@ -1,13 +1,14 @@
-require File.join(Rails.root, 'lib/hcard')
-require File.join(Rails.root, 'lib/webfinger_profile')
+#   Copyright (c) 2010-2012, Diaspora Inc.  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
 
 class Webfinger
-  attr_accessor :host_meta_xrd, :webfinger_profile_xrd, 
-                :webfinger_profile, :hcard, :hcard_xrd, :person, 
+  attr_accessor :host_meta_xrd, :webfinger_profile_xrd,
+                :webfinger_profile, :hcard, :hcard_xrd, :person,
                 :account, :ssl
 
   def initialize(account)
-    self.account = account 
+    self.account = account
     self.ssl = true
   end
 
@@ -18,7 +19,7 @@ class Webfinger
   end
 
   def self.in_background(account, opts={})
-    Resque.enqueue(Jobs::FetchWebfinger, account)
+    Workers::FetchWebfinger.perform_async(account)
   end
 
   #everything below should be private I guess
@@ -28,8 +29,13 @@ class Webfinger
 
   def get(url)
     Rails.logger.info("Getting: #{url} for #{account}")
-    begin 
-      Faraday.get(url).body
+    begin
+      res = Faraday.get(url)
+      return false if res.status == 404
+      res.body
+    rescue OpenSSL::SSL::SSLError => e
+      Rails.logger.info "Failed to fetch #{url}: SSL setup invalid"
+      raise e
     rescue => e
       Rails.logger.info("Failed to fetch: #{url} for #{account}; #{e.message}")
       raise e
@@ -51,7 +57,7 @@ class Webfinger
     else
       person = make_person_from_webfinger
     end
-    FEDERATION_LOGGER.info("successfully webfingered#{@account}")
+    FEDERATION_LOGGER.info("successfully webfingered #{@account}") if person
     person
   end
 
@@ -64,7 +70,7 @@ class Webfinger
         self.ssl = false
         retry
       else
-        raise I18n.t('webfinger.xrd_fetch_failed', :account => account)
+        raise "there was an error getting the xrd from account #{@account}: #{e.message}"
       end
     end
   end
@@ -90,6 +96,8 @@ class Webfinger
 
   def webfinger_profile_xrd
     @webfinger_profile_xrd ||= get(webfinger_profile_url)
+    FEDERATION_LOGGER.warn "#{@account} doesn't exists anymore" if @webfinger_profile_xrd == false
+    @webfinger_profile_xrd
   end
 
   def hcard_xrd
@@ -97,7 +105,7 @@ class Webfinger
   end
 
   def make_person_from_webfinger
-    Person.create_from_webfinger(webfinger_profile, hcard)
+    Person.create_from_webfinger(webfinger_profile, hcard) unless webfinger_profile_xrd == false
   end
 
   def host_meta_url

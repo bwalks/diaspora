@@ -12,6 +12,8 @@ require ::File.expand_path('../lib/rack/chrome_frame',  __FILE__)
 if defined?(Unicorn)
   use UnicornKiller::Oom, 300 * 1024
 end
-
+use Rack::Deflater
 use Rack::ChromeFrame, :minimum => 8
+use Rack::Protection::FrameOptions
+
 run Diaspora::Application

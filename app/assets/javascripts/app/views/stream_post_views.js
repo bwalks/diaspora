@@ -6,7 +6,10 @@ app.views.StreamPost = app.views.Post.extend({
     ".feedback" : "feedbackView",
     ".likes" : "likesInfoView",
     ".comments" : "commentStreamView",
-    ".post-content" : "postContentView"
+    ".post-content" : "postContentView",
+    ".oembed" : "oEmbedView",
+    ".opengraph" : "openGraphView",
+    ".status-message-location" : "postLocationStreamView"
   },
 
   events: {
@@ -19,13 +22,15 @@ app.views.StreamPost = app.views.Post.extend({
     "click .block_user": "blockUser"
   },
 
-  tooltipSelector : ".delete, .block_user, .post_scope",
+  tooltipSelector : ".timeago, .post_scope, .block_user, .delete",
 
   initialize : function(){
     this.model.bind('remove', this.remove, this);
 
     //subviews
     this.commentStreamView = new app.views.CommentStream({model : this.model});
+    this.oEmbedView = new app.views.OEmbed({model : this.model});
+    this.openGraphView = new app.views.OpenGraph({model : this.model});
   },
 
 
@@ -45,6 +50,10 @@ app.views.StreamPost = app.views.Post.extend({
     return new postClass({ model : this.model })
   },
 
+  postLocationStreamView : function(){
+    return new app.views.LocationStream({ model : this.model});
+  },
+
   removeNsfwShield: function(evt){
     if(evt){ evt.preventDefault(); }
     this.model.set({nsfw : false})
@@ -59,7 +68,7 @@ app.views.StreamPost = app.views.Post.extend({
 
   blockUser: function(evt){
     if(evt) { evt.preventDefault(); }
-    if(!confirm("Ignore this user?")) { return }
+    if(!confirm(Diaspora.I18n.t('ignore_user'))) { return }
 
     var personId = this.model.get("author").id;
     var block = new app.models.Block();
@@ -77,6 +86,11 @@ app.views.StreamPost = app.views.Post.extend({
     })
   },
 
+  remove : function() {
+    $(this.el).slideUp(400, _.bind(function(){this.$el.remove()}, this));
+    return this
+  },
+
   hidePost : function(evt) {
     if(evt) { evt.preventDefault(); }
     if(!confirm(Diaspora.I18n.t('confirm_dialog'))) { return }
@@ -89,7 +103,7 @@ app.views.StreamPost = app.views.Post.extend({
       }
     })
 
-    this.slideAndRemove();
+    this.remove();
   },
 
   focusCommentTextarea: function(evt){

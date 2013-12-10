@@ -14,6 +14,12 @@ class Conversation < ActiveRecord::Base
 
   belongs_to :author, :class_name => 'Person'
 
+  validate :max_participants
+
+  def max_participants
+    errors.add(:max_participants, "too many participants") if participants.count > 20
+  end
+
   accepts_nested_attributes_for :messages
 
   def recipients
@@ -26,6 +32,12 @@ class Conversation < ActiveRecord::Base
 
   def diaspora_handle= nh
     self.author = Webfinger.new(nh).fetch
+  end
+  
+  def first_unread_message(user)
+    if visibility = self.conversation_visibilities.where(:person_id => user.person.id).where('unread > 0').first
+      self.messages.all[-visibility.unread] 
+    end
   end
 
   def public?

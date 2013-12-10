@@ -16,16 +16,16 @@ describe RegistrationsController do
       :password_confirmation => "password"
       }
     }
-    Webfinger.stub_chain(:new, :fetch).and_return(Factory(:person))
+    Webfinger.stub_chain(:new, :fetch).and_return(FactoryGirl.create(:person))
   end
 
   describe '#check_registrations_open!' do
     before do
-      AppConfig[:registrations_closed] = true
+      AppConfig.settings.enable_registrations = false
     end
 
     after do
-      AppConfig[:registrations_closed] = false
+      AppConfig.settings.enable_registrations = true
     end
 
     it 'redirects #new to the login page' do
@@ -55,11 +55,8 @@ describe RegistrationsController do
   describe "#create" do
     context "with valid parameters" do
       before do
-        AppConfig[:registrations_closed] = false
-      end
-
-      before do
-        user = Factory.build(:user)
+        AppConfig.settings.enable_registrations = true
+        user = FactoryGirl.build(:user)
         User.stub!(:build).and_return(user)
       end
 
@@ -110,9 +107,9 @@ describe RegistrationsController do
         flash[:error].should_not be_blank
       end
 
-      it "re-renders the form" do
+      it "redirects back" do
         get :create, @invalid_params
-        response.should render_template("registrations/new")
+        response.should be_redirect
       end
     end
   end

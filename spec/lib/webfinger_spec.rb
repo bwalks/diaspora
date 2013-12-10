@@ -5,13 +5,13 @@
 require 'spec_helper'
 
 describe Webfinger do
-  let(:host_meta_xrd) { File.open(File.join(Rails.root, 'spec', 'fixtures', 'host-meta.fixture.html')).read }
-  let(:webfinger_xrd) { File.open(File.join(Rails.root, 'spec', 'fixtures', 'webfinger.fixture.html')).read }
-  let(:hcard_xml) { File.open(File.join(Rails.root, 'spec', 'fixtures', 'hcard.fixture.html')).read }
+  let(:host_meta_xrd) { File.open(Rails.root.join('spec', 'fixtures', 'host-meta.fixture.html')).read }
+  let(:webfinger_xrd) { File.open(Rails.root.join('spec', 'fixtures', 'webfinger.fixture.html')).read }
+  let(:hcard_xml) { File.open(Rails.root.join('spec', 'fixtures', 'hcard.fixture.html')).read }
   let(:account){'foo@bar.com'}
   let(:account_in_fixtures){"alice@localhost:9887"}
   let(:finger){Webfinger.new(account)}
-  let(:host_meta_url){"http://#{AppConfig[:pod_uri].authority}/webfinger?q="}
+  let(:host_meta_url){"http://#{AppConfig.pod_uri.authority}/webfinger?q="}
 
   describe '#intialize' do
     it 'sets account ' do
@@ -31,8 +31,8 @@ describe Webfinger do
   end
 
   describe '.in_background' do
-    it 'enqueues a Jobs::FetchWebfinger job' do
-      Resque.should_receive(:enqueue).with(Jobs::FetchWebfinger, account)
+    it 'enqueues a Workers::FetchWebfinger job' do
+      Workers::FetchWebfinger.should_receive(:perform_async).with(account)
       Webfinger.in_background(account)
     end
   end
@@ -72,11 +72,20 @@ describe Webfinger do
 
       a_request(:get, redirect_url).should have_been_made
     end
+    
+    it 'returns false on 404' do
+      url ="https://bar.com/.well-known/host-meta"
+      stub_request(:get, url).
+        to_return(:status => 404, :body => nil)
+
+      finger.get(url).should_not == nil
+      finger.get(url).should == false
+    end
   end
 
   describe 'existing_person_with_profile?' do
     it 'returns true if cached_person is present and has a profile' do
-      finger.should_receive(:cached_person).twice.and_return(Factory(:person))
+      finger.should_receive(:cached_person).twice.and_return(FactoryGirl.create(:person))
       finger.existing_person_with_profile?.should be_true
     end
 
@@ -86,7 +95,7 @@ describe Webfinger do
     end
 
     it 'returns false if the person has no profile' do
-      p = Factory(:person)
+      p = FactoryGirl.create(:person)
       p.profile = nil
       finger.stub(:cached_person).and_return(p)
       finger.existing_person_with_profile?.should be_false
@@ -176,8 +185,15 @@ describe Webfinger do
   describe '#make_person_from_webfinger' do
     it 'with an hcard and a webfinger_profile, it calls Person.create_from_webfinger' do
       finger.stub(:hcard).and_return("hcard")
+      finger.stub(:webfinger_profile_xrd).and_return("webfinger_profile_xrd")
       finger.stub(:webfinger_profile).and_return("webfinger_profile")
       Person.should_receive(:create_from_webfinger).with("webfinger_profile", "hcard")
+      finger.make_person_from_webfinger
+    end
+    
+    it 'with an false xrd it does not call Person.create_from_webfinger' do
+      finger.stub(:webfinger_profile_xrd).and_return(false)
+      Person.should_not_receive(:create_from_webfinger)
       finger.make_person_from_webfinger
     end
   end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe UserPresenter do
   before do
-    @presenter = UserPresenter.new(bob)
+    @presenter = UserPresenter.new(bob, [])
   end
 
   describe '#to_json' do
@@ -24,6 +24,14 @@ describe UserPresenter do
       fakebook = stub(:provider => 'fakebook')
       bob.stub(:services).and_return([fakebook])
       @presenter.services.should include(:provider => 'fakebook')
+    end
+  end
+
+  describe '#configured_services' do
+    it 'displays a list of the users configured services' do
+      fakebook = stub(:provider => 'fakebook')
+      bob.stub(:services).and_return([fakebook])
+      @presenter.configured_services.should include("fakebook")
     end
   end
 end

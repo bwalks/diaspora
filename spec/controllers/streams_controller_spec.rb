@@ -11,35 +11,19 @@ describe StreamsController do
 
   describe "#public" do
     it 'will succeed if admin' do
-      AppConfig[:admins] = [alice.username]
+      Role.add_admin(alice.person)
       get :public
       response.should be_success
     end
 
     it 'will redirect if not' do
-      AppConfig[:admins] = []
       get :public
       response.should be_redirect
     end
   end
 
   describe '#multi' do
-    before do
-      @old_spotlight_value = AppConfig[:community_spotlight]
-    end
-
-    after do
-      AppConfig[:community_spotlight] = @old_spotlight_value
-    end
-
     it 'succeeds' do
-      AppConfig[:community_spotlight] = [bob.person.diaspora_handle]
-      get :multi
-      response.should be_success
-    end
-
-    it 'succeeds without AppConfig[:community_spotlight]' do
-      AppConfig[:community_spotlight] = nil
       get :multi
       response.should be_success
     end

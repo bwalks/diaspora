@@ -2,8 +2,19 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
+require 'sidekiq/web'
+
 Diaspora::Application.routes.draw do
-  mount RailsAdmin::Engine => '/admin_panel', :as => 'rails_admin'
+  if Rails.env.production?
+    mount RailsAdmin::Engine => '/admin_panel', :as => 'rails_admin'
+  end
+
+  constraints ->(req) { req.env["warden"].authenticate?(scope: :user) &&
+                        req.env['warden'].user.admin? } do
+    mount Sidekiq::Web => '/sidekiq', :as => 'sidekiq'
+  end
+
+  get "/atom.xml" => redirect('http://blog.diasporafoundation.org/feed/atom') #too many stupid redirects :()
 
   get 'oembed' => 'posts#oembed', :as => 'oembed'
   # Posting and Reading
@@ -12,12 +23,16 @@ Diaspora::Application.routes.draw do
   resources :status_messages, :only => [:new, :create]
 
   resources :posts do
-    resources :likes, :only => [:create, :destroy, :index]
+    member do
+      get :next
+      get :previous
+      get :interactions
+    end
+
+    resources :likes, :only => [:create, :destroy, :index ]
     resources :participations, :only => [:create, :destroy, :index]
     resources :comments, :only => [:new, :create, :destroy, :index]
   end
-
-  match "/framer" => redirect("/posts/new")
 
   get 'p/:id' => 'posts#show', :as => 'short_post'
   get 'posts/:id/iframe' => 'posts#iframe', :as => 'iframe'
@@ -39,21 +54,19 @@ Diaspora::Application.routes.draw do
   get "liked" => "streams#liked", :as => "liked_stream"
   get "commented" => "streams#commented", :as => "commented_stream"
   get "aspects" => "streams#aspects", :as => "aspects_stream"
-  
+
   resources :aspects do
     put :toggle_contact_visibility
   end
 
   get 'bookmarklet' => 'status_messages#bookmarklet'
 
-  resources :photos, :except => [:index] do
+  resources :photos, :except => [:index, :show] do
     put :make_profile_photo
   end
 
-  # ActivityStreams routes
-  scope "/activity_streams", :module => "activity_streams", :as => "activity_streams" do
-    resources :photos, :controller => "photos", :only => [:create]
-  end
+	#Search
+	get 'search' => "search#search"
 
   resources :conversations do
     resources :messages, :only => [:create, :show]
@@ -65,13 +78,8 @@ Diaspora::Application.routes.draw do
   end
 
   resources :tags, :only => [:index]
-  scope "tags/:name" do
-    post   "tag_followings" => "tag_followings#create", :as => 'tag_tag_followings'
-    delete "tag_followings" => "tag_followings#destroy", :as => 'tag_tag_followings'
-  end
 
-  post   "multiple_tag_followings" => "tag_followings#create_multiple", :as => 'multiple_tag_followings'
-  resources "tag_followings", :only => [:create]
+  resources "tag_followings", :only => [:create, :destroy, :index]
 
   get 'tags/:name' => 'tags#show', :as => 'tag'
 
@@ -110,7 +118,7 @@ Diaspora::Application.routes.draw do
   get 'invitations/email' => 'invitations#email', :as => 'invite_email'
   get 'users/invitations' => 'invitations#new', :as => 'new_user_invitation'
   post 'users/invitations' => 'invitations#create', :as => 'new_user_invitation'
-  
+
   get 'login' => redirect('/users/sign_in')
 
   scope 'admins', :controller => :admins do
@@ -141,6 +149,7 @@ Diaspora::Application.routes.draw do
     resources :photos
     get :contacts
     get "aspect_membership_button" => :aspect_membership_dropdown, :as => "aspect_membership_button"
+    get :hovercard
 
     member do
       get :last_post
@@ -170,13 +179,6 @@ Diaspora::Application.routes.draw do
 
   # External
 
-  resources :authorizations, :only => [:index, :destroy]
-  scope "/oauth", :controller => :authorizations, :as => "oauth" do
-    get "authorize" => :new
-    post "authorize" => :create
-    post :token
-  end
-
   resources :services, :only => [:index, :destroy]
   controller :services do
     scope "/auth", :as => "auth" do
@@ -205,16 +207,27 @@ Diaspora::Application.routes.draw do
 
   get 'mobile/toggle', :to => 'home#toggle_mobile', :as => 'toggle_mobile'
 
-  #Protocol Url
-  get 'protocol' => redirect("https://github.com/diaspora/diaspora/wiki/Diaspora%27s-federation-protocol")
-
-  # Resque web
-  if AppConfig[:mount_resque_web]
-    mount Resque::Server.new, :at => '/resque-jobs', :as => "resque_web"
+  # Help
+  get 'help' => 'help#getting_help', :as => 'faq_getting_help'
+  
+  scope path: "/help/faq", :controller => :help, :as => 'faq' do
+    get :account_and_data_management
+    get :aspects
+    get :mentions
+    get :miscellaneous
+    get :pods
+    get :posts_and_posting
+    get :private_posts
+    get :private_profiles
+    get :public_posts
+    get :public_profiles
+    get :resharing_posts
+    get :sharing
+    get :tags
   end
 
-  # Logout Page (go mobile)
-  get 'logged_out' => 'users#logged_out', :as => 'logged_out'
+  #Protocol Url
+  get 'protocol' => redirect("http://wiki.diasporafoundation.org/Federation_Protocol_Overview")
 
   # Startpage
   root :to => 'home#show'

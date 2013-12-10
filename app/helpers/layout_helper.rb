@@ -7,6 +7,8 @@
 # to do so you may need to add this line to your ApplicationController
 #   helper :layout
 module LayoutHelper
+  include ApplicationHelper
+
   def title(page_title, show_title = true)
     content_for(:title) { page_title.to_s }
     @show_title = show_title
@@ -14,11 +16,11 @@ module LayoutHelper
 
   def page_title(text=nil)
     return text unless text.blank?
-    current_user ? current_user.name : t("application.helper.diaspora_alpha")
+    pod_name
   end
 
   def set_asset_host
-    path = ENV['ASSET_HOST'].to_s + '/assets/'
+    path = AppConfig.environment.assets.host.to_s + '/assets/'
     content_tag(:script) do
       <<-JS.html_safe
         if(window.app) app.baseImageUrl("#{path}")
@@ -31,16 +33,6 @@ module LayoutHelper
       <<-JS.html_safe
         Diaspora.I18n.loadLocale(#{get_javascript_strings_for(I18n.locale).to_json}, "#{I18n.locale}");
         Diaspora.Page = "#{params[:controller].camelcase}#{params[:action].camelcase}";
-      JS
-    end
-  end
-
-  def set_current_user_in_javascript
-    return unless user_signed_in?
-    user = UserPresenter.new(current_user).to_json
-    content_tag(:script) do
-      <<-JS.html_safe
-        window.current_user_attributes = #{user}
       JS
     end
   end
@@ -63,8 +55,8 @@ module LayoutHelper
   end
 
   def include_base_css_framework(use_bootstrap=false)
-    if use_bootstrap || @aspect == :getting_started || @page == :logged_out || @page == :experimental
-      stylesheet_link_tag 'bootstrap-complete'
+    if use_bootstrap || @aspect == :getting_started
+      stylesheet_link_tag('bootstrap-complete')
     else
       stylesheet_link_tag 'blueprint', :media => 'screen'
     end
@@ -86,8 +78,6 @@ module LayoutHelper
   end
 
   def flash_messages
-    return if @page == :logged_out
-
     flash.map do |name, msg|
       content_tag(:div, :id => "flash_#{name}") do
         content_tag(:div, msg, :class => 'message')

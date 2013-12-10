@@ -8,6 +8,8 @@ class RelayableRetraction < SignedRetraction
 
   attr_accessor :parent_author_signature
 
+  delegate :parent, :parent_author, to: :target, allow_nil: true
+
   def signable_accessors
     super - ['parent_author_signature']
   end
@@ -20,17 +22,21 @@ class RelayableRetraction < SignedRetraction
     retraction
   end
 
-  def parent
-    return nil unless self.target.present?
-    self.target.parent
-  end
-
   def diaspora_handle
     self.sender_handle
   end
 
   def relayable?
     true
+  end
+
+  def perform receiving_user
+    Rails.logger.debug "Performing relayable retraction for #{target_guid}"
+    if not self.parent_author_signature.nil? or self.parent.author.remote?
+      # Don't destroy a relayable unless the top-level owner has received it, otherwise it may not get relayed
+      self.target.destroy
+      Rails.logger.info("event=relayable_retraction status =complete target_type=#{self.target_type} guid =#{self.target_guid}")
+    end
   end
 
   def receive(recipient, sender)

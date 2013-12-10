@@ -20,7 +20,7 @@ class CommentsController < ApplicationController
 
     if @comment
       respond_to do |format|
-        format.json{ render :json => @comment.as_api_response(:backbone), :status => 201 }
+        format.json{ render :json => CommentPresenter.new(@comment), :status => 201 }
         format.html{ render :nothing => true, :status => 201 }
         format.mobile{ render :partial => 'comment', :locals => {:post => @comment.post, :comment => @comment} }
       end
@@ -36,11 +36,11 @@ class CommentsController < ApplicationController
       respond_to do |format|
         format.js { render :nothing => true, :status => 204 }
         format.json { render :nothing => true, :status => 204 }
-        format.mobile{ redirect_to @comment.post }
+        format.mobile{ redirect_to :back }
       end
     else
       respond_to do |format|
-        format.mobile {redirect_to :back}
+        format.mobile { redirect_to :back }
         format.any(:js, :json) {render :nothing => true, :status => 403}
       end
     end
@@ -56,12 +56,12 @@ class CommentsController < ApplicationController
 
     @comments = @post.comments.for_a_stream
     respond_with do |format|
-      format.json  { render :json => @comments.as_api_response(:backbone), :status => 200 }
+      format.json  { render :json => CommentPresenter.as_collection(@comments), :status => 200 }
       format.mobile{render :layout => false}
     end
   end
 
-  protected
+  private
 
   def find_post
     if user_signed_in?

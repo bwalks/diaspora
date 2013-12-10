@@ -1,4 +1,4 @@
-#   Copyright (c) 2010-2012, Diaspora Inc.  This file is
+#   Copyright (c) 2010-2013, Diaspora Inc.  This file is
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
@@ -40,6 +40,48 @@ nl:
             username:
               invalid: "is ongeldig. We staan alleen letters, nummers, en underscores toe."
               taken: "is al in gebruik."
+  admins:
+    admin_bar:
+      pages: "Pagina's"
+      pod_stats: "Pod Statistieken"
+      user_search: "Gebruiker Zoeken"
+      weekly_user_stats: "Wekelijkse Gebruiker Statistieken"
+    stats:
+      2weeks: "2 Weken"
+      50_most: "50 Meest Populaire Tags"
+      comments:
+        one: "%{count} reactie"
+        other: "%{count} reacties"
+        zero: "%{count} reacties"
+      current_segment: "Het huidige segment heeft gemiddeld <b>%{post_yest}</b> berichten per gebruiker sinds <b>%{post_day}</b>"
+      daily: "Dagelijks"
+      display_results: "Resultaten uit het <b>%{segment}</b>-segment"
+      go: "gaan"
+      month: "Maand"
+      posts:
+        one: "%{count} bericht"
+        other: "%{count} berichten"
+        zero: "%{count} berichten"
+      tag_name: "Tag Naam: <b>%{name_tag}</b> Count: <b>%{count_tag}</b>"
+      usage_statistic: "Verbruiks Statistieken"
+      users:
+        one: "%{count} gebruiker"
+        other: "%{count} gebruikers"
+        zero: "%{count} gebruikers"
+      week: "Week"
+    user_search:
+      add_invites: "voeg uitnodigingen toe"
+      email_to: "E-mail om uit te nodigen"
+      users:
+        one: "%{count} gebruiker gevonden"
+        other: "%{count} gebruikers gevonden"
+      you_currently: "je hebt nog %{user_invitation} uitnodiging(en) over %{link}"
+    weekly_user_stats:
+      amount_of:
+        one: "aantal nieuwe gebruikers deze week: %{count}"
+        other: "aantal nieuwe gebruikers deze week: %{count}"
+        zero: "aantal nieuwe gebruikers deze week: geen"
+      current_server: "Huidige server datum is %{date}"
   ago: "%{time} geleden"
   all_aspects: "Alle Aspecten"
   application:
@@ -67,6 +109,7 @@ nl:
       edit_aspect: "Bewerk %{name}"
       select_all: "Selecteer alles"
     aspect_stream:
+      make_something: "Schrijf iets"
       stay_updated: "Blijf up-to-date"
       stay_updated_explanation: "Je standaard stream is gevuld met al je contacten, tags die je volgt, en berichten van een aantal creatieve leden van de community."
     contacts_not_visible: "Contacten in dit aspect zullen elkaar niet kunnen zien."
@@ -105,18 +148,24 @@ nl:
       donate: "Doneer"
       handle_explanation: "Dit is jouw Diaspora ID. Net als een e-mailadres kun je deze aan mensen geven zodat ze je kunnen bereiken."
       help:
+        any_problem: "Enige Problemen?"
+        contact_podmin: "Gelieve de systeembeheerder van uw pod te contacteren!"
         do_you: "Heb je:"
         email_feedback: "%{link} jouw feedback, als dat jou voorkeur heeft."
+        email_link: "E-mail"
         feature_suggestion: "... een %{link} suggestie?"
         find_a_bug: "... een %{link} gevonden?"
         have_a_question: "... een %{link}?"
         here_to_help: "De Diaspora community staat voor je klaar!"
+        mail_podmin: "E-mail van Podmin"
         need_help: "Hulp nodig?"
         tag_bug: "bug"
         tag_feature: "feature"
         tag_question: "vraag"
         tutorials_wiki_and_forum: "%{tutorial} & %{wiki} & %{forum}: Community-gedreven tutorials, instructies, en nieuws."
       introduce_yourself: "Dit is jouw Stream.  Spring erin en introduceer jezelf."
+      keep_diaspora_running: "Houdt de Diaspora ontwikkeling snel met een maandelijkse bijdrage!"
+      keep_pod_running: "Hou %{pod} draaiend en koop een cafeïneshot voor de servers met een maandelijkse donatie."
       new_here:
         follow: "Volg %{link} en verwelkom nieuwe Diaspora* gebruikers!"
         learn_more: "Meer informatie"
@@ -168,6 +217,10 @@ nl:
     index:
       no_applications: "Je hebt nog geen applicaties geregistreerd."
       revoke_access: "Toegang Terugdraaien"
+    new:
+      authorize: "Machtigen"
+      cubbies_will: "Cubbies is gemachtigd om foto's te plaatsen namens jou"
+      nope: "Nee"
   back: "Terug"
   blocks:
     create:
@@ -178,7 +231,6 @@ nl:
       success: "Eens zien wat ze te zeggen hebben! #zeghallo"
   bookmarklet:
     explanation: "Post vanaf overal naar Diaspora door %{link} op te slaan."
-    explanation_link_text: "deze link"
     heading: "Bookmarktlet"
     post_something: "Plaats iets op Diaspora"
     post_success: "Gepost!"
@@ -230,9 +282,15 @@ nl:
       success: "Privégesprek succesvol verwijderd"
     helper:
       new_messages:
-        one: "1 nieuw privébericht"
-        other: "%{count} nieuwe privéberichten"
-        zero: "Geen nieuwe privéberichten"
+        one: |-
+            1 nieuw privébericht
+            1 nieuw bericht
+        other: |-
+            %{count} nieuwe privéberichten
+            nieuwe berichten
+        zero: |-
+            Geen nieuwe privéberichten
+            Geen nieuwe berichten
     index:
       create_a_new_message: "schrijf een nieuw privébericht"
       inbox: "Postvak In"
@@ -263,23 +321,13 @@ nl:
     helper:
       correct_the_following_errors_and_try_again: "Corrigeer de volgende fouten en probeer opnieuw."
       invalid_fields: "Ongeldige velden"
+    login_try_again: "<a href='%{login_link}'>Log in</a> en probeer het opnieuw."
+    post_not_public: "Het bericht dat je probeert de bekijken is niet openbaar!"
   fill_me_out: "Vul me in!"
   find_people: "Vind mensen of #tags"
   hide: "Verbergen"
-  home:
-    show:
-      already_account: "heb je al een account?"
-      choice: "Keuze"
-      choice_explanation: "Diaspora laat jou je contacten verdelen over verschillende groepen, genaamd 'Aspecten', welke uniek zijn voor Diaspora. Deze zorgen er voor dat je jouw foto's, verhalen en grappen alleen deelt met degenen waarmee je ze wilt delen."
-      learn_about_host: "Leer hoe je zelf een Diaspora server kunt opzetten."
-      login_here: "log hier in"
-      ownership: "Eigendom"
-      ownership_explanation: "Je bent zelf de eigenaar van je eigen foto's. Dus waarom zou je dat opgeven om ze met iemand te delen? Op Diaspora behoud je het eigendom over alles wat jij met anderen deelt, waardoor je volledige controle hebt over de distributie ervan."
-      share_what_you_want: "Deel wat je wilt delen, met degenen met wie je het wilt delen."
-      simplicity: "Eenvoud"
-      simplicity_explanation: "Diaspora maakt delen helder en simpel – vooral als het om privacy gaat. Je hoeft namelijk niet eindeloos door pagina's met instellingen en opties te klikken om je profiel veilig en afgeschermd te houden."
-      tagline_first_half: "Deel wat je wilt delen,"
-      tagline_second_half: "met degenen met wie je het wilt delen."
+  invitation_codes:
+    excited: "%{name} is blij je hier te zien."
   invitations:
     a_facebook_user: "Een Facebook gebruiker"
     check_token:
@@ -287,6 +335,7 @@ nl:
     create:
       already_contacts: "Je bent al verbonden met deze persoon"
       already_sent: "Je hebt deze persoon al uitgenodigd."
+      empty: "Gelieve minstens 1 email adres toe te voegen."
       no_more: "Je hebt geen uitnodigingen meer."
       own_address: "Het is niet mogelijk om een uitnodiging naar je eigen adres te sturen."
       rejected: "De volgende e-mailadressen gaven problemen: "
@@ -298,10 +347,15 @@ nl:
       already_invited: "De volgende mensen hebben je uitnodiging niet geaccepteerd:"
       aspect: "Aspect"
       check_out_diaspora: "Kijk eens naar Diaspora!"
-      comma_seperated_plz: "Je kunt meerdere e-mailadressen invullen, gescheiden door komma's."
+      codes_left:
+        one: "Nog een uitnodiging over op deze code"
+        other: "Nog %{count} uitnodigingen over op deze code"
+        zero: "Geen uitnodigingen over op deze code"
+      comma_separated_plz: "Je kan meerdere e-mail adressen toevoegen door ze te scheiden door komma's"
       if_they_accept_info: "als hij of zij accepteert zal hij of zij toegevoegd worden aan het aspect waarvoor je hem of haar uitgenodigd hebt."
       invite_someone_to_join: "Nodig iemand uit om lid te worden op Diaspora!"
       language: "Taal"
+      paste_link: "Deel deze link met je vrienden om ze uit te nodigen voor Diaspora*, of e-mail ze de link direct."
       personal_message: "Persoonlijk bericht"
       resend: "Stuur opnieuw"
       send_an_invitation: "Stuur een uitnodiging"
@@ -312,6 +366,7 @@ nl:
       back_to_top: "Terug naar top"
       powered_by: "POWERED BY DIASPORA*"
       public_feed: "Publieke Diaspora Feed van %{name}"
+      source_package: "download het broncode pakket"
       toggle: "switch mobiele versie"
       whats_new: "wat is nieuw op Diaspora?"
       your_aspects: "jouw aspecten"
@@ -342,24 +397,18 @@ nl:
         two: "%{count} leuk"
         zero: "niemand vindt dit leuk"
       people_like_this_comment:
-        few: "%{count} likes"
-        many: "%{count} likes"
-        one: "%{count} like"
-        other: "%{count} likes"
-        two: "%{count} leuk"
-        zero: "geen likes"
+        one: "%{count} persoon vindt dit leuk"
+        other: "%{count} mensen vinden dit leuk"
+        zero: "niemand vindt dit leuk"
   limited: "Beperkt"
   more: "Meer"
   next: "volgende"
   no_results: "Geen resultaten gevonden"
   notifications:
     also_commented:
-      few: "%{actors} hebben ook op %{post_author} zijn %{post_link} gereageerd."
-      many: "%{actors} hebben ook op %{post_author} zijn %{post_link} gereageerd."
       one: "%{actors} heeft ook op %{post_author} zijn %{post_link} gereageerd."
       other: "%{actors} hebben ook op %{post_author} zijn %{post_link} gereageerd."
-      two: "%{actors} hebben ook gereageerd op %{post_author}'s %{post_link}."
-      zero: "%{actors} heeft ook %{post_author} zijn %{post_link} gereageerd."
+      zero: "%{actors} heeft ook op %{post_author} zijn %{post_link} gereageerd."
     also_commented_deleted:
       few: "%{actors} hebben gereageerd op een verwijderd bericht."
       many: "%{actors} heeft gereageerd op een verwijderde post."
@@ -392,6 +441,7 @@ nl:
         two: "en %{count} anderen"
         zero: "en niemand anders"
       mark_all_as_read: "Markeer alles gelezen"
+      mark_unread: "Markeer ongelezen"
       notifications: "Notificaties"
     liked:
       one: "%{actors} vind jou %{post_link} leuk."
@@ -417,12 +467,9 @@ nl:
       zero: "%{actors} heeft jou genoemd in een verwijderde post."
     post: "bericht"
     private_message:
-      few: "%{actors} hebben je een bericht gestuurd."
-      many: "%{actors} hebben je een bericht gestuurd."
       one: "%{actors} heeft je een bericht gestuurd."
       other: "%{actors} hebben je een bericht gestuurd."
-      two: "%{actors} hebben je een bericht gestuurd."
-      zero: "%{actors} heeft jou een bericht gestuurd."
+      zero: "%{actors} heeft je een bericht gestuurd."
     reshared:
       few: "%{actors} hebben jouw %{post_link} doorgegeven."
       many: "%{actors} hebben jouw %{post_link} doorgegeven."
@@ -443,6 +490,7 @@ nl:
       zero: "%{actors} deelt nu met jou."
   notifier:
     a_post_you_shared: "een bericht."
+    accept_invite: "Accepteer Jouw Diaspora* uitnodiging!"
     click_here: "klik hier"
     comment_on_post:
       reply: "Reageer of bekijk %{name}'s bericht >"
@@ -451,6 +499,22 @@ nl:
       subject: "Activeer je nieuwe e-mailadres alstublieft %{unconfirmed_email}"
     email_sent_by_diaspora: "Deze mail is gestuurd door Diaspora.  Als je dit soort email's niet meer wilt ontvangen,"
     hello: "Hoi %{name}!"
+    invite:
+      message: |-
+          Hallo!
+
+          Je bent uitgenodigd om lid te worden van Diaspora*!
+
+          Click op deze link om te starten
+
+          [%{invite_url}][1]
+
+          Liefs,
+
+          De Diaspora* email robot!
+
+          [1]: %{invite_url}
+    invited_you: "%{name} heeft je uitgenodigd voor Diaspora*"
     liked:
       liked: "%{name} vind jou post leuk"
       view_post: "Bekijk bericht >"
@@ -477,6 +541,8 @@ nl:
   password: "Wachtwoord"
   password_confirmation: "Wachtwoordbevestiging"
   people:
+    add_contact:
+      invited_by: "Je bent uitgenodigd door"
     add_contact_small:
       add_contact_from_tag: "contact toevoegen van tag"
     aspect_list:
@@ -491,6 +557,8 @@ nl:
       no_one_found: "...en je hebt niemand gevonden."
       no_results: "Heey! Je moet wel ergens naar zoeken."
       results_for: "zoekresultaten voor"
+      searching: "zoeken, even geduld..."
+    last_post: "Laatste Bericht"
     many: "%{count} mensen"
     one: "1 persoon"
     other: "%{count} mensen"
@@ -566,6 +634,8 @@ nl:
       error: "Foto veranderen niet gelukt."
       notice: "Foto succesvol veranderd."
   posts:
+    presenter:
+      title: "Een bericht van %{name}"
     show:
       destroy: "Verwijder"
       not_found: "Sorry, dat bericht konden we niet vinden."
@@ -623,14 +693,23 @@ nl:
       password_to_confirm: "(we hebben je huidige wachtwoord nodig om de wijzigingen te bevestigen)"
       unhappy: "Ontevreden?"
       update: "Bijwerken"
+    invalid_invite: "De uitnodigingslink die je gebruikt is niet langer geldig!"
     new:
+      continue: "Ga door"
       create_my_account: "Maak mijn account aan!"
+      diaspora: "<3 Diaspora*"
+      email: "E-MAIL"
       enter_email: "Vul een e-mailadres in"
-      enter_password: "Vul een wachtwoord in"
+      enter_password: "Vul een wachtwoord in (zes karakters minimaal)"
       enter_password_again: "Vul hetzelfde wachtwoord nogmaals in"
       enter_username: "Kies een gebruikersnaam (alleen letters, nummers, en underscores)"
+      hey_make: "HEEY,<br/>MAAK<br/>IETS"
       join_the_movement: "Sluit je aan!"
+      password: "WACHTWOORD"
+      password_confirmation: "Wachtwoordbevestiging"
+      sign_up: "AANMELDEN"
       sign_up_message: "Social Networking met een ♥"
+      username: "GEBRUIKER"
   requests:
     create:
       sending: "Versturen..."
@@ -732,6 +811,7 @@ nl:
       invite_your_friends: "Nodig je vrienden uit"
       invites: "Uitnodigingen"
       invites_closed: "Uitnodigingen zijn momenteel gesloten voor deze Diaspora pod"
+      share_this: "Deel deze link via e-mail, blog, of favoriet sociaal netwerk"
     notification:
       new: "Nieuw %{type} van %{from}"
     public_explain:
@@ -776,6 +856,7 @@ nl:
       show: "laat zien"
       unlike: "vind ik niet meer leuk"
       via: "via %{link}"
+      via_mobile: "via mobiel"
       viewable_to_anyone: "Deze post is zichtbaar voor iedereen op het internet"
   status_messages:
     create:
@@ -884,6 +965,7 @@ nl:
       change_email: "Verander e-mailadres"
       change_language: "Taal wijzigen"
       change_password: "Verander wachtwoord"
+      character_minimum_expl: "moet ten minste zes karakters bevatten"
       close_account:
         dont_go: "Hey, ga alsjeblieft niet weg!"
         if_you_want_this: "Als je dit echt wilt, typ je wachtwoord onder in en klik 'Sluit Account'"
@@ -896,6 +978,7 @@ nl:
       close_account_text: "Sluit Account"
       comment_on_post: "...iemand op jouw post reageert?"
       current_password: "Huidig wachtwoord"
+      current_password_expl: "die gene waar je mee inlogt..."
       download_photos: "download mijn foto's"
       download_xml: "download mijn xml"
       edit_account: "Bewerk account"
@@ -919,21 +1002,13 @@ nl:
     getting_started:
       awesome_take_me_to_diaspora: "Super! Neem me naar Diaspora*"
       community_welcome: "De Diaspora community is blij je aan boord te hebben!"
+      connect_to_facebook_link: "verbinden met je Facebook account"
       hashtag_explanation: "Hashtags laten je gemakkelijk jou interesses volgen. Bovendien kunnen ze je helpen bij het vinden van nieuwe contacten op Diaspora."
       hashtag_suggestions: "Probeer het volgen van tags zoals #art, #movies, #gif, etc. eens uit."
-      hooking_up_fb: "verbinden met je Facebook account"
       saved: "Opgeslagen!"
-      we_can_speed_things_up: "We kunnen het wat sneller maken door"
       well_hello_there: "O, hallo daar!"
       what_are_you_in_to: "Wat interesseert je?"
-      what_facebook_does: "met Diaspora. Je naam en foto worden dan overgezet, en je kan heen en weer posten."
       who_are_you: "Wie ben je?"
-    logged_out:
-      go_mobile: "Ga nu mobile."
-      on_your_mobile_device: "op jouw mobiele telefoon om toegang te krijgen tot Diaspora* mobile. "
-      signed_out: "Je bent nu uitgelogd uit Diaspora*"
-      simply_visit: "Bezoek simpelweg"
-      works_on_modern: "Werkt op alle moderne smartphones"
     privacy_settings:
       ignored_users: "Genegeerde Gebruikers"
       stop_ignoring: "Stop negeren"

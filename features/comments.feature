@@ -5,8 +5,10 @@ Feature: commenting
   I want to comment on her post
 
   Background:
-    Given a user named "Bob Jones" with email "bob@bob.bob"
-    And a user named "Alice Smith" with email "alice@alice.alice"
+    Given following users exist:
+      | username    | email             |
+      | Bob Jones   | bob@bob.bob       |
+      | Alice Smith | alice@alice.alice |
     And a user with email "bob@bob.bob" is connected with "alice@alice.alice"
     When "alice@alice.alice" has posted a status message with a photo
 
@@ -15,7 +17,8 @@ Feature: commenting
     And I am on "alice@alice.alice"'s page
     Then I should see "Look at this dog"
     When I focus the comment field
-    And I fill in "text" with "is that a poodle?"
+    And I fill in the following:
+        | text            | is that a poodle?    |
     And I press "Comment"
     Then I should see "is that a poodle?" within ".comment"
     And I should see "less than a minute ago" within ".comment time"
@@ -25,13 +28,11 @@ Feature: commenting
     And I am on "alice@alice.alice"'s page
     Then I should see "Look at this dog"
     When I focus the comment field
-    And I fill in "text" with "is that a poodle?"
+    And I fill in the following:
+        | text            | is that a poodle?    |
     And I press "Comment"
-    And I wait for the ajax to finish
-    When I hover over the ".comment"
-    And I preemptively confirm the alert
     And I click to delete the first comment
-    And I wait for the ajax to finish
+    And I confirm the alert
     Then I should not see "is that a poodle?"
 
   Scenario: expand the comment form in the main stream and an individual aspect stream
@@ -54,5 +55,6 @@ Feature: commenting
     When I follow "less than a minute ago"
     Then I should see "Look at this dog"
     And I make a show page comment "I think thats a cat"
+    Then I should see "less than a minute ago" within "#comments"
     When I go to "alice@alice.alice"'s page
     Then I should see "I think thats a cat"
